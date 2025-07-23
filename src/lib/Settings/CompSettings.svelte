@@ -102,7 +102,6 @@
                     ]}
                 select={(value) => $config.setNum(Opt.ACCURATE_KEYBOARD, value)}
                 selectedTag={$config.getNum(Opt.ACCURATE_KEYBOARD)}
-                tag={1}
         />
     </ConfigSection>
 </div>

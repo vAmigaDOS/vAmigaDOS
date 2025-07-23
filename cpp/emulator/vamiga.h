@@ -508,12 +508,12 @@ public:
     void loadRom(const fs::path &path);
     void loadExt(const fs::path &path);
 
-    /** @brief  Loads a ROM, provided by a RomFile
+    /** @brief  Loads a ROM provided by a RomFile
      */
     void loadRom(MediaFile &file);
     void loadExt(MediaFile &file);
 
-    /** @brief  Loads a ROM, provided by a memory buffer
+    /** @brief  Loads a ROM provided by a memory buffer
      */
     void loadRom(const u8 *buf, isize len);
     void loadExt(const u8 *buf, isize len);
@@ -1599,11 +1599,11 @@ public:
     RecorderAPI recorder;
     RemoteManagerAPI remoteManager;
     RetroShellAPI retroShell;
-    
+
     // Shortcuts
     FloppyDriveAPI *df[4] = { &df0, &df1, &df2, &df3 };
     HardDriveAPI *hd[4] = { &hd0, &hd1, &hd2, &hd3 };
-    
+
 
     //
     // Static methods
@@ -1636,10 +1636,17 @@ public:
     /** @brief  Returns statistical information about the components.
      */
     const EmulatorStats &getStats() const;
-    
+
     /** @brief  Reads a message from the message queue
      */
     bool getMsg(Message &msg);
+    void lockMsgQueue();
+    void unlockMsgQueue();
+
+    /** @brief  Reads multiple messages from the message queue
+     */
+    isize getMsg(isize count, Message *buffer);
+
 
     /// @}
     /// @name Querying the emulator state

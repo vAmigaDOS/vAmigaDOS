@@ -607,14 +607,14 @@
 
 	async function lockMouse() {
 		if (!isLocked()) {
-			console.log('lockMouse');
+			// console.log('lockMouse');
 			await canvas.requestPointerLock();
 		}
 	}
 
 	function unlockMouse() {
 		if (isLocked()) {
-			console.log('unlockMouse');
+			// console.log('unlockMouse');
 			document.exitPointerLock();
 		}
 	}

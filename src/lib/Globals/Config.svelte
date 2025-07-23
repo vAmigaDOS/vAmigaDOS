@@ -56,6 +56,8 @@
     ];
 
     let audioOpts: { opt: Opt, default: string }[] = [
+        {opt: Opt.ASR, default: '0'},
+        {opt: Opt.BUFFER_SIZE, default: '16384'},
         {opt: Opt.AUDVOL0, default: '100'},
         {opt: Opt.AUDVOL1, default: '100'},
         {opt: Opt.AUDVOL2, default: '100'},
@@ -82,7 +84,7 @@
     let canvasBorder = 0;
     let shaking = 1;
     let renderMode = RenderMode.smooth;
-    let flickerWeight = 50;
+    // let flickerWeight = 50;
 
     // Connect to Dexie DB
     let opts: OptEntry[];
@@ -366,15 +368,18 @@
     // Querying a config item
     //
 
+    /*
     function unwrap<T>(value: T | undefined | null): Number {
         if (value === undefined || value === null) {
             throw new Error("Value is undefined or null");
         }
         return (value as any).value;
     }
+    */
 
     function assertDefined<T>(value: T | undefined | null): T {
         if (value === undefined || value === null) {
+            console.warn("Value is undefined or null");
             throw new Error("Value is undefined or null");
         }
         return value;
@@ -429,21 +434,21 @@
             case Opt.SLOW_RAM_DELAY:
                 return $amiga.getConfig(assertDefined($wasm.OPT_MEM_SLOW_RAM_DELAY)).toString();
             case Opt.DF0:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT), 0).toString();
             case Opt.DF1:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT, 1)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT), 1).toString();
             case Opt.DF2:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT, 2)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT), 2).toString();
             case Opt.DF3:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT, 3)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_CONNECT), 3).toString();
             case Opt.HD0:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT), 0).toString();
             case Opt.HD1:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT, 1)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT), 1).toString();
             case Opt.HD2:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT, 2)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT), 2).toString();
             case Opt.HD3:
-                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT, 3)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_HDC_CONNECT), 3).toString();
 
                 //
                 // Compatibility settings
@@ -482,6 +487,10 @@
                 return $amiga.getConfig(assertDefined($wasm.OPT_AUD_SAMPLING_METHOD)).toString();
             case Opt.FILTER_TYPE:
                 return $amiga.getConfig(assertDefined($wasm.OPT_AUD_FILTER_TYPE)).toString();
+            case Opt.BUFFER_SIZE:
+                return $amiga.getConfig(assertDefined($wasm.OPT_AUD_BUFFER_SIZE)).toString();
+            case Opt.ASR:
+                return $amiga.getConfig(assertDefined($wasm.OPT_AUD_ASR)).toString();
             case Opt.AUDVOL0:
                 return $amiga.getConfig(assertDefined($wasm.OPT_AUD_VOL0)).toString();
             case Opt.AUDVOL1:
@@ -495,13 +504,13 @@
             case Opt.AUDVOLR:
                 return $amiga.getConfig(assertDefined($wasm.OPT_AUD_VOLR)).toString();
             case Opt.STEP_VOLUME:
-                return 0; //$amiga.getConfigId(unwrap($wasm.OPT_AUD_STEP_VOLUME, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_STEP_VOLUME), 0).toString();
             case Opt.POLL_VOLUME:
-                return 0;// $amiga.getConfigId(unwrap($wasm.OPT_AUD_POLL_VOLUME, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_POLL_VOLUME), 0).toString();
             case Opt.INSERT_VOLUME:
-                return 0; //$amiga.getConfigId(unwrap($wasm.OPT_AUD_INSERT_VOLUME, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_INSERT_VOLUME), 0).toString();
             case Opt.EJECT_VOLUME:
-                return 0; //$amiga.getConfigId(unwrap($wasm.OPT_AUD_EJECT_VOLUME, 0)).toString();
+                return $amiga.getConfigId(assertDefined($wasm.OPT_DRIVE_EJECT_VOLUME), 0).toString();
 
             //
             // Video settings
@@ -518,7 +527,7 @@
             case Opt.SATURATION:
                 return $amiga.getConfig(assertDefined($wasm.OPT_MON_SATURATION)).toString();
             case Opt.FLICKER_WEIGHT:
-                return flickerWeight.toString();
+                return $amiga.getConfig(assertDefined($wasm.OPT_MON_FLICKER_WEIGHT)).toString();
             default:
                 console.warn("get: Invalid option: ", option);
                 // TODO: Throw exception
@@ -611,19 +620,19 @@
             case Opt.DF0:
                 break;
             case Opt.DF1:
-                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 1, Number(val));
-                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 2, 0);
-                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 3, 0);
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT),  Number(val), 1);
+                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 0, 2);
+                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 0, 3);
                 break;
             case Opt.DF2:
                 if (Number(val) == 1) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 1, 1);
-                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 2, Number(val));
-                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 3, 0);
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), Number(val), 2);
+                if (Number(val) == 0) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 0, 3);
                 break;
             case Opt.DF3:
                 if (Number(val) == 1) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 1, 1);
-                if (Number(val) == 1) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 2, 1);
-                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 3, Number(val));
+                if (Number(val) == 1) $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), 1, 2);
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_CONNECT), Number(val), 3);
                 break;
             case Opt.HD0:
                 $amiga.configureId(assertDefined($wasm.OPT_HDC_CONNECT), 0, val);
@@ -703,6 +712,12 @@
             case Opt.FILTER_TYPE:
                 $amiga.configure(assertDefined($wasm.OPT_AUD_FILTER_TYPE), Number(val));
                 break;
+            case Opt.BUFFER_SIZE:
+                $amiga.configure(assertDefined($wasm.OPT_AUD_BUFFER_SIZE), Number(val));
+                break;
+            case Opt.ASR:
+                $amiga.configure(assertDefined($wasm.OPT_AUD_ASR), Number(val));
+                break;
             case Opt.AUDVOL0:
                 $amiga.configure(assertDefined($wasm.OPT_AUD_VOL0), Number(val));
                 break;
@@ -722,16 +737,16 @@
                 $amiga.configure(assertDefined($wasm.OPT_AUD_VOLR), Number(val));
                 break;
             case Opt.STEP_VOLUME:
-                // $amiga.configure(assertDefined($wasm.OPT_AUD_STEP_VOLUME), Number(val));
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_STEP_VOLUME), Number(val), 0);
                 break;
             case Opt.POLL_VOLUME:
-                // $amiga.configure(assertDefined($wasm.OPT_AUD_POLL_VOLUME), Number(val));
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_POLL_VOLUME), Number(val), 0);
                 break;
             case Opt.INSERT_VOLUME:
-                // $amiga.configure(assertDefined($wasm.OPT_AUD_INSERT_VOLUM), Number(val));
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_INSERT_VOLUME), Number(val), 0);
                 break;
             case Opt.EJECT_VOLUME:
-                // $amiga.configure(assertDefined($wasm.OPT_AUD_EJECT_VOLUME, Number(val));
+                $amiga.configureId(assertDefined($wasm.OPT_DRIVE_EJECT_VOLUME), Number(val), 0);
                 break;
 
             //
@@ -754,7 +769,7 @@
                 $amiga.configure(assertDefined($wasm.OPT_MON_SATURATION), Number(val));
                 break;
             case Opt.FLICKER_WEIGHT:
-                flickerWeight = Number(val);
+                $amiga.configure(assertDefined($wasm.OPT_MON_FLICKER_WEIGHT), Number(val));
                 break;
             default:
                 console.warn("set: Invalid option: ", option);

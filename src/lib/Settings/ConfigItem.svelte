@@ -11,7 +11,6 @@
 		min?: number;
 		max?: number;
 		locked?: boolean;
-		tag?: number;
 		selectedTag?: number;
 		items?: MenuItem[];
 		select: (value: number) => void;
@@ -23,7 +22,6 @@
 		min = 0,
 		max = 0,
 		locked = false,
-		tag = 0,
 		selectedTag = 0,
 		items = [],
 		select = () => {},
@@ -77,7 +75,6 @@
 					isEnabled={!locked}
 					items={items}
 					select={(value: number) => { selectedTag = value; select(selectedTag)}}
-					{tag}
                     {selectedTag}
 					listStyle="w-[18rem] mt-2 text-xl bg-accent text-accent-content"
 				>
@@ -93,7 +90,7 @@
 					{/if}
 				</SelectMenu>
 			{:else}
-				<Slider {min} {max} {locked} {tag} {select}>
+				<Slider {min} {max} {locked} value={selectedTag} {select}>
 					<button class="btn btn-primary {opac} w-[18rem] rounded-none border-0 text-xl font-normal"
 						>{selectedTag}</button
 					>

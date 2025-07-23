@@ -3,7 +3,7 @@
 
 	let {
 		src = '',
-		onclick,
+		onclick = () => {},
 		children
 	}: {
 		src?: string;

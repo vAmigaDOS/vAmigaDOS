@@ -4,7 +4,6 @@
 	import Checkmark from './Checkmark.svelte';
 
 	interface Props {
-		tag?: number;
 		items?: MenuItem[];
 		isEnabled?: boolean;
 		checkmarks?: boolean;
@@ -14,7 +13,6 @@
 		children?: Snippet;
 	}
 	let {
-		tag = 0,
 		items = [],
 		isEnabled = true,
 		checkmarks = false,
@@ -29,19 +27,11 @@
 		return it.filter((item) => item.isSelected);
 	});
 
-	/*
-	function numSelected(): number {
-		console.log('numSelected', items);
-		return items.filter((item) => item.isSelected).length;
-	}
-	*/
-
 	const action = (e: MouseEvent, value: number) => {
 		e.preventDefault();
 
 		// Force the dropdown to close
 		if (document.activeElement) (document.activeElement as HTMLElement).blur();
-		console.log(`Menu action: ${tag} - ${value}`);
 		select(value);
 	};
 
@@ -71,7 +61,7 @@
 				{#if item instanceof MenuSeparator}
 					<li class="divider"></li>
 				{:else if !item.isHidden}
-					<li id={tag.toString()}>
+					<li>
 						<button
 							disabled={!item.isEnabled}
 							class={item.isEnabled ? '' : 'hover:bg-base-100 opacity-40'}

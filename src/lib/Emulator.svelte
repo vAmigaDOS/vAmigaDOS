@@ -72,17 +72,18 @@
 	}
 
 	export function doAnimationFrame(animationFrame: number, now: DOMHighResTimeStamp) {
-		/*
-        if (animationFrame % 50 == 0) {
-            console.log("Frame " + animationFrame);
-        }
-        */
-
-		// Process pending messages
+		// Read pending messages
+		const entries = [];
+		$amiga.lockMsgQueue();
 		while (1) {
 			let msg = $amiga.readMessage();
 			if (msg.type == $wasm.Msg.NONE) break;
+			entries.push(msg);
+		}
+		$amiga.unlockMsgQueue();
 
+		// Process messages
+		for (const msg of entries) {
 			$wasm.processMsg(msg);
 		}
 

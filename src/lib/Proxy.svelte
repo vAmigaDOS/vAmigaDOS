@@ -383,7 +383,6 @@
         $dfUnsaved = [$df0.hasModifiedDisk(), $df1.hasModifiedDisk(), $df2.hasModifiedDisk(), $df3.hasModifiedDisk()];
         $dfProtected = [$df0.hasProtectedDisk(), $df1.hasProtectedDisk(), $df2.hasProtectedDisk(), $df3.hasProtectedDisk()];
         $dfCylinder = [$df0.currentCyl(), $df1.currentCyl(), $df2.currentCyl(), $df3.currentCyl()];
-        $dfConnected = [$hd0.isConnected(), $hd0.isConnected(), $hd1.isConnected(), $hd2.isConnected()];
 
         $hdConnected = [$hd0.isConnected(), $hd1.isConnected(), $hd2.isConnected(), $hd3.isConnected()];
         $hdCylinder = [$hd0.currentCyl(), $hd1.currentCyl(), $hd2.currentCyl(), $hd3.currentCyl()];
@@ -402,6 +401,8 @@
 
             case $wasm.MSG_CONFIG:
                 $MsgConfig++;
+                $config = $config;
+                updateStateVariables();
                 break;
 
             case $wasm.MSG_POWER:

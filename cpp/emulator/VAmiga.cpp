@@ -2005,6 +2005,20 @@ VAmiga::getMsg(Message &msg)
     return emu->main.msgQueue.get(msg);
 }
 
+void 
+VAmiga::lockMsgQueue()
+{
+    VAMIGA_PUBLIC
+    return emu->main.msgQueue.lock();
+}
+ 
+void 
+VAmiga::unlockMsgQueue()
+{
+    VAMIGA_PUBLIC
+    return emu->main.msgQueue.unlock();
+}
+
 bool
 VAmiga::isPoweredOn() const
 {

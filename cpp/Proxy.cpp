@@ -382,8 +382,9 @@ Message AmigaProxy::readMessage()
     if (!amiga->getMsg(msg))
     {
         msg.type = Msg(0);
+    } else {
+        // printf("Message: %s [%llx]\n", MsgEnum::key(msg.type), msg.value);
     }
-    // printf("Message: %s [%llx]\n", MsgEnum::key(msg.type), msg.value);
     return msg;
 }
 
@@ -465,6 +466,8 @@ EMSCRIPTEN_BINDINGS(AmigaProxy)
     class_<AmigaProxy>("AmigaProxy")
         .constructor<>()
         .function("readMessage", &AmigaProxy::readMessage)
+        .function("lockMsgQueue", &AmigaProxy::lockMsgQueue)
+        .function("unlockMsgQueue", &AmigaProxy::unlockMsgQueue)
 
         .function("launch", &AmigaProxy::launch)
         .function("wakeUp", &AmigaProxy::wakeUp)
@@ -1047,8 +1050,8 @@ EMSCRIPTEN_BINDINGS(Keys)
     constant("OPT_MEM_RAM_INIT_PATTERN", (int)Opt::MEM_RAM_INIT_PATTERN);
 
     constant("OPT_DC_SPEED", (int)Opt::DC_SPEED);
-    constant("OPT_LOCK_DSKSYNC", (int)Opt::DC_LOCK_DSKSYNC);
-    constant("OPT_AUTO_DSKSYNC", (int)Opt::DC_AUTO_DSKSYNC);
+    constant("OPT_DC_LOCK_DSKSYNC", (int)Opt::DC_LOCK_DSKSYNC);
+    constant("OPT_DC_AUTO_DSKSYNC", (int)Opt::DC_AUTO_DSKSYNC);
 
     constant("OPT_DRIVE_CONNECT", (int)Opt::DRIVE_CONNECT);
     constant("OPT_DRIVE_TYPE", (int)Opt::DRIVE_TYPE);

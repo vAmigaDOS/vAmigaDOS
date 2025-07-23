@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { MenuItem, Opt } from '$lib/types';
-	import { config, wasm } from '$lib/stores';
+	import { config, MsgConfig, wasm } from '$lib/stores';
 	import ConfigSection from './ConfigSection.svelte';
 	import ConfigItem from './ConfigItem.svelte';
 
@@ -14,7 +14,7 @@
 				items={[
                     new MenuItem('None', 0),
                     new MenuItem('Nearest', 1),
-                    new MenuItem('Linear', 2),
+                    new MenuItem('Linear', 2)
                     ]}
 				select={(value) => $config.setNum(Opt.SAMPLING_METHOD, value)}
 				selectedTag={$config.getNum(Opt.SAMPLING_METHOD)}
@@ -29,7 +29,7 @@
                     new MenuItem('Legacy Filter', 4),
                     new MenuItem('Low-pass only', 5),
                     new MenuItem('LED filter only', 6),
-                    new MenuItem('High-pass only', 7),
+                    new MenuItem('High-pass only', 7)
                     ]}
 				select={(value) => $config.set(Opt.FILTER_TYPE, value)}
 				selectedTag={$config.get(Opt.FILTER_TYPE)}
@@ -38,7 +38,6 @@
 	<ConfigSection name="Speakers">
 		<ConfigItem
 			name="Left Speaker Volume"
-			tag={$wasm.OPT_AUDVOLL}
 			selectedTag={$config.get(Opt.AUDVOLL)}
 			select={(value) => $config.set(Opt.AUDVOLL, value)}
 			min={0}
@@ -46,7 +45,6 @@
 		/>
 		<ConfigItem
 			name="Right Speaker Volume"
-			tag={$wasm.OPT_AUDVOLR}
 			selectedTag={$config.get(Opt.AUDVOLR)}
 			select={(value) => $config.set(Opt.AUDVOLR, value)}
 			min={0}
@@ -54,7 +52,6 @@
 		/>
 		<ConfigItem
 			name="Paula Channel 0 Volume"
-			tag={0}
 			selectedTag={$config.get(Opt.AUDVOL0)}
 			select={(value) => $config.set(Opt.AUDVOL0, value)}
 			min={0}
@@ -62,7 +59,6 @@
 		/>
 		<ConfigItem
 			name="Paula Channel 1 Volume"
-			tag={1}
 			selectedTag={$config.get(Opt.AUDVOL1)}
 			select={(value) => $config.set(Opt.AUDVOL1, value)}
 			min={0}
@@ -70,7 +66,6 @@
 		/>
 		<ConfigItem
 			name="Paula Channel 2 Volume"
-			tag={2}
 			selectedTag={$config.get(Opt.AUDVOL2)}
 			select={(value) => $config.set(Opt.AUDVOL2, value)}
 			min={0}
@@ -78,7 +73,6 @@
 		/>
 		<ConfigItem
 			name="Paula Channel 3 Volume"
-			tag={3}
 			selectedTag={$config.get(Opt.AUDVOL3)}
 			select={(value) => $config.set(Opt.AUDVOL3, value)}
 			min={0}
@@ -88,7 +82,6 @@
 	<ConfigSection name="Drive Sounds">
 		<ConfigItem
 			name="Head Step Volume"
-			tag={$wasm.OPT_STEP_VOLUME}
 			selectedTag={$config.get(Opt.STEP_VOLUME)}
 			select={(value) => $config.set(Opt.STEP_VOLUME, value)}
 			min={0}
@@ -96,7 +89,6 @@
 		/>
 		<ConfigItem
 			name="Poll Disk Volume"
-			tag={$wasm.OPT_POLL_VOLUME}
 			selectedTag={$config.get(Opt.POLL_VOLUME)}
 			select={(value) => $config.set(Opt.POLL_VOLUME, value)}
 			min={0}
@@ -104,7 +96,6 @@
 		/>
 		<ConfigItem
 			name="Insert Disk Volume"
-			tag={$wasm.OPT_INSERT_VOLUME}
 			selectedTag={$config.get(Opt.INSERT_VOLUME)}
 			select={(value) => $config.set(Opt.INSERT_VOLUME, value)}
 			min={0}
@@ -112,7 +103,6 @@
 		/>
 		<ConfigItem
 			name="Eject Disk Volume"
-			tag={$wasm.OPT_EJECT_VOLUME}
 			selectedTag={$config.get(Opt.EJECT_VOLUME)}
 			select={(value) => $config.set(Opt.EJECT_VOLUME, value)}
 			min={0}

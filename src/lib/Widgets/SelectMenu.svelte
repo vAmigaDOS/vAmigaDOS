@@ -2,10 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import { MenuItem } from '$lib/types';
 	import Menu from '$lib/Widgets/Menu.svelte';
-	import Checkmark from './Checkmark.svelte';
 
 	interface Props {
-		tag?: number;
 		items?: MenuItem[];
 		isEnabled?: boolean;
 		dropdownStyle?: string;
@@ -15,7 +13,6 @@
 		children?: Snippet;
 	}
 	let {
-		tag = 0,
 		items = [],
 		isEnabled = true,
 		dropdownStyle = '',
@@ -24,8 +21,6 @@
 		select = () => {},
 		children
 	}: Props = $props();
-
-	let checkmark = $derived(selectedTag == tag ? '&#10003' : '');
 
 	let checkmarkedItems = $derived.by(() => {
 		let result = items;
@@ -39,7 +34,7 @@
 
 {#key items}
 {#key selectedTag}
-<Menu {tag} items={checkmarkedItems} {isEnabled} checkmarks={true} {dropdownStyle} {listStyle} {select}>
+<Menu items={checkmarkedItems} {isEnabled} checkmarks={true} {dropdownStyle} {listStyle} {select}>
 	{@render children?.()}
 </Menu>
 {/key}

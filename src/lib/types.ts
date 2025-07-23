@@ -62,6 +62,8 @@ export enum Opt
 	// Audio settings
 	//
 	SAMPLING_METHOD = 'SAMPLING_METHOD',
+	ASR = 'ASR',
+	BUFFER_SIZE = 'BUFFER_SIZE',
 	FILTER_TYPE = 'FILTER_TYPE',
 	AUDVOL0 = 'AUDVOL0',
 	AUDVOL1 = 'AUDVOL1',

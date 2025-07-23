@@ -7,6 +7,8 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+src/lib/vAmiga.js
+src/lib/vAmiga.wasm
 
 # OS
 .DS_Store
@@ -17,6 +19,10 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
+
+# VSCode 
+
+/.vscode
 
 # Vite
 vite.config.js.timestamp-*

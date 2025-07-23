@@ -30,14 +30,23 @@
 	import WarpControl from './WarpControl.svelte';
 	import FileDialog from '$lib/Utils/FileDialog.svelte';
 
+	/*
+	interface Props {
+		connected: boolean[];
+	}
+	let {
+		connected = [false, false, false, false],
+	}: Props = $props();
+	*/
+
 	// Bindings
 	let speedometer: Speedometer;
 	let fdialog: FileDialog;
 
-	$: muteIcon = $muted || $warp;
-	$: debugIcon = $track;
-	$: haltIcon = $halted;
-
+	let muteIcon = $derived($muted || $warp);
+	let debugIcon = $derived($track);
+	let haltIcon = $derived($halted);
+	
 	const bg = 'bg-gradient-to-t from-primary to-primary/80';
 
 	export function update(animationFrame: number, now: DOMHighResTimeStamp) {
@@ -54,7 +63,6 @@
 	}
 
 	function dfMenuAction(df: number, tag: number) {
-        console.log('dfMenuAction', df, tag);
         switch (tag) {
 			case 0:
 				fdialog.open().then(
@@ -95,7 +103,7 @@
 			default:
 				console.warn('Invalid menu item', tag);
 		}
-	}
+	}	
 </script>
 
 <FileDialog bind:this={fdialog}></FileDialog>
@@ -106,7 +114,7 @@
 			type="button"
 			class="flex h-full w-16 justify-center"
 			id="vamigaButton"
-			on:click={toggleSidebar}
+			onclick={toggleSidebar}
 		>
 			<img class="h-full" src="icons/vamigaIcon.png" alt="vAmiga Icon" />
 		</button>

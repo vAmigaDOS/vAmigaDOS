@@ -21,7 +21,6 @@
 	function onclick() {
         let current = $config.get(Opt.WARP_MODE);
         $config.set(Opt.WARP_MODE, (current + 1) % 3);
-        $proxy.updateStateVariables();
 	}
 </script>
 

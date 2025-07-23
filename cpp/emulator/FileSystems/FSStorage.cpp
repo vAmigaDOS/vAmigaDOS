@@ -9,6 +9,7 @@
 
 #include "FSStorage.h"
 #include "FileSystem.h"
+#include <algorithm>
 
 namespace vamiga {
 
@@ -58,6 +59,18 @@ FSStorage::_dump(Category category, std::ostream &os) const
         default:
             break;
     }
+}
+
+std::vector<Block>
+FSStorage::sortedKeys() const
+{
+    std::vector<Block> result;
+    result.reserve(blocks.size());
+
+    for (const auto& [key, _] : blocks) result.push_back(key);
+    std::ranges::sort(result);
+
+    return result;
 }
 
 bool

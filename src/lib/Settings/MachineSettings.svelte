@@ -171,7 +171,6 @@
 			items={[
 				new MenuItem('Internal Drive', 1)
 			]}
-			tag={0}
 			selectedTag={$config.getNum(Opt.DF0)}
 			select={(value) => $config.setNum(Opt.DF0, value)}
 			locked={$poweredOn}
@@ -182,7 +181,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('A1010', 1)
 			]}
-			tag={1}
 			selectedTag={$config.getNum(Opt.DF1)}
 			select={(value) => $config.setNum(Opt.DF1, value)}
 			locked={$poweredOn}
@@ -193,7 +191,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('A1010', 1)
 			]}
-			tag={2}
 			selectedTag={$config.getNum(Opt.DF2)}
 			select={(value) => $config.setNum(Opt.DF2, value)}
 			locked={$poweredOn || !$config.getBool(Opt.DF1) }
@@ -204,7 +201,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('A1010', 1)
 			]}
-			tag={3}
 			selectedTag={$config.getNum(Opt.DF3)}
 			select={(value) => $config.setNum(Opt.DF3, value)}
 			locked={$poweredOn || !$config.getBool(Opt.DF2) }
@@ -217,7 +213,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('Zorro Board', 1)
 			]}
-				tag={0}
 				selectedTag={$config.getNum(Opt.HD0)}
 				select={(value) => $config.setNum(Opt.HD0, value)}
 				locked={$poweredOn}
@@ -228,7 +223,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('Zorro Board', 1)
 			]}
-				tag={1}
 				selectedTag={$config.getNum(Opt.HD1)}
 				select={(value) => $config.setNum(Opt.HD1, value)}
 				locked={$poweredOn}
@@ -239,7 +233,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('Zorro Board', 1)
 			]}
-				tag={2}
 				selectedTag={$config.getNum(Opt.HD2)}
 				select={(value) => $config.setNum(Opt.HD2, value)}
 				locked={$poweredOn}
@@ -250,7 +243,6 @@
 				new MenuItem('None', 0),
 				new MenuItem('Zorro Board', 1)
 			]}
-				tag={3}
 				selectedTag={$config.getNum(Opt.HD3)}
 				select={(value) => $config.setNum(Opt.HD3, value)}
 				locked={$poweredOn}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { darkTheme, invert, dfHasDisk } from '$lib/stores';
-	import BarBox from './BarBox.svelte';
+	import BarBox from '$lib/Statusbar/BarBox.svelte';
 	import Menu from '$lib/Widgets/Menu.svelte';
 	import { MenuItem } from '$lib/types';
 
