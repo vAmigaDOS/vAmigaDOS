@@ -22,7 +22,7 @@ cd vAmigaNet
 npm install
 
 # Setup a build directory
-mkdir wasm
+mkdir build
 emcmake cmake -S cpp -B build
 
 # Build the WASM part
