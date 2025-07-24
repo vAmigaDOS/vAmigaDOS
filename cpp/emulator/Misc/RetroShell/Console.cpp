@@ -263,9 +263,9 @@ Console::printHelp(isize tab)
 {
     *this << vspace{1};
 
-    *this << "RetroShell " << description() << " " << Amiga::version() << "\n\n";
-    storage << string(tab + 4, ' ') << "Type 'help' or press 'Tab' twice for help.\n";
-    storage << string(tab + 4, ' ') << "Press 'Shift+Tab' to switch consoles.";
+    // *this << "RetroShell " << description() << " " << Amiga::version() << "\n\n";
+    storage << string(tab + 0, ' ') << "Type 'help' or press 'Tab' twice for help.\n";
+    storage << string(tab + 0, ' ') << "Press 'Shift+Tab' to switch consoles.";
 
     remoteManager.rshServer << "Type 'help' for help.\n";
 

@@ -46,7 +46,13 @@ NavigatorConsole::getPrompt()
 void
 NavigatorConsole::welcome()
 {
-    Console::welcome();
+    storage << "vAmigaDOS File System Navigator ";
+    *this << Amiga::build() << '\n';
+    *this << '\n';
+
+    *this << "Copyright (C) Dirk W. Hoffmann. www.dirkwhoffmann.de" << '\n';
+    *this << "https://github.com/dirkwhoffmann/vAmiga" << '\n';
+    *this << '\n';
 }
 
 void

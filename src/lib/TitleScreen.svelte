@@ -82,7 +82,7 @@
 		</div>
 	</div>
 
-	<div class="flex z-50 h-full w-screen border-0 border-cyan-400 flex-col {debug}" transition:fade>
+	<div class="z-50 flex h-full w-screen flex-col border-0 border-cyan-400 {debug}" transition:fade>
 		<div in:fade={{ duration: 2000 }}>
 			<div class="absolute h-full w-full bg-gradient-to-t from-gray-500 via-white to-white"></div>
 			<div class="absolute flex h-full w-full items-center justify-center">
@@ -92,12 +92,19 @@
 						src="icons/hand-disk.png"
 						alt="Background"
 					/>
-					<div class="mt-4 w-[50vw] font-josefin text-lg text-center text-white">
+					<div class="font-josefin mt-4 w-[50vw] text-center text-2xl text-white">
 						Welcome to the Amiga file system inspector!
 					</div>
-					<div class=" w-[50vw] font-josefin text-lg text-center text-gray-200">
-						Drag and drop an ADF or HDF file anywhere on this window to browse files and
-						explore folders.
+					<!--<div class="mt-0 w-[50vw] font-josefin text-sm text-center text-white">
+						v0.9 alpha (build 250724)
+					</div>-->
+					<div class=" font-josefin w-[50vw] text-center text-lg text-gray-200">
+						Drag and drop an ADF or HDF file anywhere on this window to browse files and explore
+						folders.
+					</div>
+					<div class="font-josefin text-lg m-0 w-[50vw] text-center text-red-700">
+						This version is a pre-release. Please help improving this software by filing bugs at the
+						GitHub project help.
 					</div>
 				</div>
 			</div>
@@ -110,7 +117,7 @@
 		{#if $layer === Layer.showcases}
 			<Showcases />
 		{/if}
-		<div class="absolute border-0 bottom-6 left-6 flex flex-col space-y-3 {debug}">
+		<div class="absolute bottom-6 left-6 flex flex-col space-y-3 border-0 {debug}">
 			<MainPageLink onclick={openAbout}>
 				{#snippet icon()}
 					<div>
@@ -142,7 +149,7 @@
 				{/snippet}
 			</MainPageLink>
 		</div>
-		<div class="absolute border-0 bottom-6 right-6 flex flex-col space-y-3 {debug}">
+		<div class="absolute right-6 bottom-6 flex flex-col space-y-3 border-0 {debug}">
 			<Logo></Logo>
 		</div>
 	</div>
