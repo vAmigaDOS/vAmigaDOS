@@ -4,7 +4,7 @@
 	import { goto } from '$app/navigation';
 	import DiGrails from 'svelte-icons/di/DiGrails.svelte';
 	import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
-	import FaMicrochip from 'svelte-icons/fa/FaMicrochip.svelte';
+	import FaBookOpen from 'svelte-icons/fa/FaBookOpen.svelte';
 	import GiBatMask from 'svelte-icons/gi/GiBatMask.svelte';
 	import MdPowerSettingsNew from 'svelte-icons/md/MdPowerSettingsNew.svelte';
 	import GoLaw from 'svelte-icons/go/GoLaw.svelte';
@@ -160,25 +160,25 @@
 				{/if}
 			</div>
 		{/if}
-		<div class="relative flex justify-center space-x-8 bg-gray-900/50 align-middle {debug}">
+		<div class="relative flex justify-center space-x-4 bg-gray-900/50 align-middle {debug}">
 			<MainPageLink onclick={openRoms}>
 				{#snippet icon()}
-					<div class="p-1.5">
-						<FaMicrochip />
+					<div>
+						<FaBookOpen />
 					</div>
 				{/snippet}
 				{#snippet description()}
-					<div>Kickstart</div>
+					<div>Learn More</div>
 				{/snippet}
 			</MainPageLink>
-			<MainPageLink onclick={openShowcases}>
+			<MainPageLink onclick={gotoGitHub}>
 				{#snippet icon()}
 					<div>
-						<DiGrails />
+						<FaGithub />
 					</div>
 				{/snippet}
 				{#snippet description()}
-					<div>Showcases</div>
+					<div>Sources</div>
 				{/snippet}
 			</MainPageLink>
 			<MainPageLink onclick={openImpressum}>
