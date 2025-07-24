@@ -5,10 +5,6 @@
         layer,
         MsgConsoleClose,
         MsgConsoleUpdate,
-        MsgScriptAbort,
-        MsgScriptDone,
-        MsgScriptPause,
-        MsgScriptWakeup,
         retroShell
     } from "$lib/stores";
 
@@ -94,7 +90,7 @@
 {#if $layer === Layer.shell}
     <div class="absolute top-0 left-0 w-full h-full flex overflow-auto" transition:fade>
         <!-- <div class="w-16 mr-1"></div> -->
-        <div class="bg-gray-500/75 grow h-full overflow-auto">
+        <div class="bg-gray-500/85 grow h-full overflow-auto">
 		<textarea
                 bind:this={textarea}
                 readonly
