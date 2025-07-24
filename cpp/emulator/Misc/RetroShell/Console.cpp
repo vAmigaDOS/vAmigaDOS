@@ -997,11 +997,12 @@ Console::initCommands(RSCommand &root)
                 printHelp(0);
             }
         });
-
+        
         root.add({
 
             .tokens = { "commander" },
             .chelp  = { "Enter or command console" },
+            .flags  = vAmigaDOS ? rs::hidden : 0,
 
             .func   = [this] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
 
@@ -1013,6 +1014,7 @@ Console::initCommands(RSCommand &root)
 
             .tokens = { "debugger" },
             .chelp  = { "Enter or debug console" },
+            .flags  = vAmigaDOS ? rs::hidden : 0,
 
             .func   = [this] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
 
@@ -1024,6 +1026,7 @@ Console::initCommands(RSCommand &root)
 
             .tokens = { "navigator" },
             .chelp  = { "Enter the file system console" },
+            .flags  = vAmigaDOS ? rs::hidden : 0,
 
             .func   = [this] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
 

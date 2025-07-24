@@ -68,6 +68,12 @@ static constexpr bool wasmBuild = 1;
 static constexpr bool wasmBuild = 0;
 #endif
 
+#ifdef VAMIGA_DOS
+static constexpr bool vAmigaDOS = 1;
+#else
+static constexpr bool vAmigaDOS = 0;
+#endif
+
 namespace vamiga {
 
 // General

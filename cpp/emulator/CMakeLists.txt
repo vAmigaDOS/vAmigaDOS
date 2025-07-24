@@ -37,6 +37,9 @@ target_compile_options(VACore PRIVATE -Wfatal-errors)
 target_compile_options(VACore PRIVATE -sWASM_WORKERS)
 set_target_properties(VACore PROPERTIES LINK_FLAGS "-O1 -mnontrapping-fptoint -fwasm-exceptions" )
 
+# Define preprocessor macros
+add_compile_definitions(VAMIGA_DOS)
+
 # Add include paths
 target_include_directories(VACore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

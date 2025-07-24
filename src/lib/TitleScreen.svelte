@@ -4,12 +4,11 @@
 	import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
 	import FaBookOpen from 'svelte-icons/fa/FaBookOpen.svelte';
 	import GoLaw from 'svelte-icons/go/GoLaw.svelte';
-	import { Layer } from '$lib/types';
 	import Logo from '$lib/Widgets/Logo.svelte';
 	import MainPageLink from '$lib/Widgets/MainPageLink.svelte';
 	import Impressum from '$lib/Impressum.svelte';
 	import About from '$lib/About.svelte';
-	import { layer, poweredOn } from '$lib/stores';
+	import { poweredOn } from '$lib/stores';
 
 	let debug = ''; // 'border-2';
 	let showAbout = false;
@@ -64,13 +63,15 @@
 						Drag and drop an ADF or HDF file anywhere on this window to browse files and explore
 						folders.
 					</div>
-					<div class="font-josefin text-lg m-4 w-[50vw] text-center text-indigo-200">
-						This version is a pre-release. Please help improving this software by
-						<a class="underline" href="https://github.com/vAmigaDOS/vAmigaDOS/issues">filing a bug report</a> on GitHub.
+					<div class="font-josefin m-4 w-[50vw] text-center text-lg text-indigo-200">
+						<a class="" href="https://github.com/vAmigaDOS/vAmigaDOS/issues"
+							>This version is a pre-release. Please help improving this software by filing a bug
+							report on GitHub.</a
+						>
 					</div>
 				</div>
 			</div>
-		<!--
+			<!--
         <div class="absolute h-full">
             <img class="h-full w-screen object-fill" src="splash-bg.jpg" alt="Background"/>
         </div>
