@@ -9,9 +9,7 @@
 	import MainPageLink from '$lib/Widgets/MainPageLink.svelte';
 	import Impressum from '$lib/Impressum.svelte';
 	import About from '$lib/About.svelte';
-	import Showcases from '$lib/Showcases/Showcases.svelte';
-	import { demos } from '$lib/Showcases/database';
-	import { amiga, audio, layer, poweredOn, proxy, showSidebar } from '$lib/stores';
+	import { layer, poweredOn } from '$lib/stores';
 
 	let debug = ''; // 'border-2';
 	let showAbout = false;
@@ -19,36 +17,7 @@
 
 	onMount(() => {
 		console.log('TitleScreen::onMount()');
-
-		// Prefetch some images
-		new Image().src = 'footage/3ddemo-small.jpg';
-		new Image().src = 'footage/batmanrises-small.jpg';
-		new Image().src = 'footage/celtic-small.jpg';
-		new Image().src = 'footage/china-small.jpg';
-		new Image().src = 'footage/defender-small.jpg';
-		new Image().src = 'footage/desertdreams-small.jpg';
-		new Image().src = 'footage/diagrom-small.jpg';
-		new Image().src = 'footage/eon-small.jpg';
-		new Image().src = 'footage/inebriation-small.jpg';
-		new Image().src = 'footage/kyrios-small.jpg';
-		new Image().src = 'footage/paccer-small.jpg';
-		new Image().src = 'footage/rinkadink-small.jpg';
-		new Image().src = 'footage/sdi-small.jpg';
-		new Image().src = 'footage/stateart-small.jpg';
-		new Image().src = 'footage/sysinfo-small.jpg';
-		new Image().src = 'footage/testkit-small.jpg';
-		new Image().src = 'footage/traprunner-small.jpg';
 	});
-
-	async function switchOn() {
-		await $audio.setup();
-		$amiga.run();
-	}
-
-	async function runDemo() {
-		await $audio.setup();
-		$proxy.runShowcase(demos[0]);
-	}
 
 	function gotoGitHub() {
 		window.location.href = 'https://github.com/vAmigaDOS/vAmigaDOS';
@@ -64,13 +33,6 @@
 </script>
 
 {#if !$poweredOn}
-	<!--
-	<div class="modal" class:modal-open={showRomViewer}>
-		<div class="modal-box h-2/3 w-2/3 max-w-none">
-			<RomViewer bind:show={showRomViewer} />
-		</div>
-	</div>
-	-->
 	<div class="modal" class:modal-open={showAbout}>
 		<div class="modal-box">
 			<About bind:show={showAbout} />
@@ -104,19 +66,16 @@
 					</div>
 					<div class="font-josefin text-lg m-4 w-[50vw] text-center text-indigo-200">
 						This version is a pre-release. Please help improving this software by
-						<a class="underline" href="https://github.com/vAmigaDOS/vAmigaDOS/issues">filing a bug report</a>.
+						<a class="underline" href="https://github.com/vAmigaDOS/vAmigaDOS/issues">filing a bug report</a> on GitHub.
 					</div>
 				</div>
 			</div>
-			<!--
+		<!--
         <div class="absolute h-full">
             <img class="h-full w-screen object-fill" src="splash-bg.jpg" alt="Background"/>
         </div>
         -->
 		</div>
-		{#if $layer === Layer.showcases}
-			<Showcases />
-		{/if}
 		<div class="absolute bottom-6 left-6 flex flex-col space-y-3 border-0 {debug}">
 			<MainPageLink onclick={openAbout}>
 				{#snippet icon()}
