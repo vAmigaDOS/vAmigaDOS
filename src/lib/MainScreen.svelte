@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Layer } from '$lib/types';
-	import { amiga, dragItem, dragType, initialized, layer, proxy, wasm } from '$lib/stores';
+	import { amiga, dragItem, dragType, initialized, layer, proxy, retroShell, wasm } from '$lib/stores';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -79,15 +79,23 @@
 	}
 
 	function handleDraggedDisk(blob: Uint8Array) {
+		$amiga.insertDisk(blob, 0);
+		$retroShell.importDf(0);
+		/*
 		$dragItem = blob;
 		$dragType = 'floppy';
 		$layer = Layer.dropzone;
+		*/
 	}
 
 	function handleDraggedHardDrive(blob: Uint8Array) {
+		$amiga.attachHardDrive(blob, 0);
+		$retroShell.importHd(0, 0);
+		/*
 		$dragItem = blob;
 		$dragType = 'harddrive';
 		$layer = Layer.dropzone;
+		*/
 	}
 </script>
 

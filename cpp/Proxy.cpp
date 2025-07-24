@@ -779,7 +779,9 @@ EMSCRIPTEN_BINDINGS(RetroShellProxy)
         .function("pressReturn", &RetroShellProxy::pressReturn)
         .function("pressTab", &RetroShellProxy::pressTab)
         .function("pressShiftReturn", &RetroShellProxy::pressShiftReturn)
-        .function("pressKey", &RetroShellProxy::pressKey);
+        .function("pressKey", &RetroShellProxy::pressKey)
+        .function("importDf", &RetroShellProxy::importDf)
+        .function("importHd", &RetroShellProxy::importHd);
 }
 
 EMSCRIPTEN_BINDINGS(Constants)

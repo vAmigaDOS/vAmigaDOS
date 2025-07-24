@@ -270,6 +270,32 @@ NavigatorConsole::parseDirectory(const Arguments &argv, const string &token, FSB
     return path;
 }
 
+void
+NavigatorConsole::import(const FloppyDrive &dfn)
+{
+    fs.init(dfn);
+}
+
+void
+NavigatorConsole::import(const HardDrive &hdn, isize part)
+{
+    fs.init(hdn, part);
+}
+
+void
+NavigatorConsole::importDf(isize n)
+{
+    assert(n >= 0 && n <= 3);
+    import(*amiga.df[n]);
+}
+
+void
+NavigatorConsole::importHd(isize n, isize part)
+{
+    assert(n >= 0 && n <= 3);
+    import(*amiga.hd[n], part);
+}
+
 FSBlock &
 NavigatorConsole::matchPath(const Arguments &argv, const string &token, Tokens &notFound)
 {

@@ -1810,6 +1810,34 @@ RetroShellAPI::execScript(const MediaFile &file)
 }
 
 void
+RetroShellAPI::import(const FloppyDrive &dfn)
+{
+    VAMIGA_PUBLIC_SUSPEND
+    retroShell->navigator.import(dfn);
+}
+
+void
+RetroShellAPI::import(const HardDrive &hdn, isize part)
+{
+    VAMIGA_PUBLIC_SUSPEND
+    retroShell->navigator.import(hdn, part);
+}
+
+void
+RetroShellAPI::importDf(isize n)
+{
+    VAMIGA_PUBLIC_SUSPEND
+    retroShell->navigator.importDf(n);
+}
+
+void
+RetroShellAPI::importHd(isize n, isize part)
+{
+    VAMIGA_PUBLIC_SUSPEND
+    retroShell->navigator.importHd(n, part);
+}
+
+void
 RetroShellAPI::setStream(std::ostream &os)
 {
     VAMIGA_PUBLIC_SUSPEND

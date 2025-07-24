@@ -1,29 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { goto } from '$app/navigation';
-	import DiGrails from 'svelte-icons/di/DiGrails.svelte';
 	import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
 	import FaBookOpen from 'svelte-icons/fa/FaBookOpen.svelte';
-	import GiBatMask from 'svelte-icons/gi/GiBatMask.svelte';
-	import MdPowerSettingsNew from 'svelte-icons/md/MdPowerSettingsNew.svelte';
 	import GoLaw from 'svelte-icons/go/GoLaw.svelte';
 	import { Layer } from '$lib/types';
 	import Logo from '$lib/Widgets/Logo.svelte';
 	import MainPageLink from '$lib/Widgets/MainPageLink.svelte';
 	import Impressum from '$lib/Impressum.svelte';
-	import RomViewer from '$lib/RomViewer.svelte';
+	import About from '$lib/About.svelte';
 	import Showcases from '$lib/Showcases/Showcases.svelte';
 	import { demos } from '$lib/Showcases/database';
-	import { amiga, audio, layer, poweredOn, wasm, proxy, showSidebar } from '$lib/stores';
+	import { amiga, audio, layer, poweredOn, proxy, showSidebar } from '$lib/stores';
 
 	let debug = ''; // 'border-2';
-	let showRomViewer = false;
+	let showAbout = false;
 	let showImpressum = false;
-
-	$: if ($layer === Layer.kickstart) {
-		showRomViewer = true;
-	}
 
 	onMount(() => {
 		console.log('TitleScreen::onMount()');
@@ -59,20 +51,11 @@
 	}
 
 	function gotoGitHub() {
-		window.location.href = 'https://github.com/dirkwhoffmann/vAmigaNet';
-		// goto('https://dirkwhoffmann.github.io/vAmiga');
+		window.location.href = 'https://github.com/vAmigaDOS/vAmigaDOS';
 	}
 
-	async function openShowcases() {
-		console.log('openShowcases');
-		await $audio.setup();
-		$layer = $layer === Layer.showcases ? Layer.none : Layer.showcases;
-		$showSidebar = false;
-	}
-
-	async function openRoms() {
-		await $audio.setup();
-		showRomViewer = true;
+	function openAbout() {
+		showAbout = true;
 	}
 
 	function openImpressum() {
@@ -88,6 +71,11 @@
 		</div>
 	</div>
 	-->
+	<div class="modal" class:modal-open={showAbout}>
+		<div class="modal-box">
+			<About bind:show={showAbout} />
+		</div>
+	</div>
 	<div class="modal" class:modal-open={showImpressum}>
 		<div class="modal-box">
 			<Impressum bind:show={showImpressum} />
@@ -123,7 +111,7 @@
 			<Showcases />
 		{/if}
 		<div class="absolute border-0 bottom-6 left-6 flex flex-col space-y-3 {debug}">
-			<MainPageLink onclick={openRoms}>
+			<MainPageLink onclick={openAbout}>
 				{#snippet icon()}
 					<div>
 						<FaBookOpen />
