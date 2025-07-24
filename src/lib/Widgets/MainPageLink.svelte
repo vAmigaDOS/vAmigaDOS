@@ -12,12 +12,12 @@
 
 <div class="flex w-24 border-0 flex-col items-center justify-center">
 	<button
-		class="flex h-8 w-8 border-0 flex-col items-center justify-center text-gray-500"
+		class="flex h-8 w-8 border-0 flex-col items-center justify-center text-gray-600"
 		{onclick}
 	>
 		{@render icon()}
 	</button>
-	<div class="font-josefin flex border-none text-sm text-gray-500">
+	<div class="font-josefin flex border-none text-sm text-gray-600">
 		{@render description()}
 	</div>
 </div>

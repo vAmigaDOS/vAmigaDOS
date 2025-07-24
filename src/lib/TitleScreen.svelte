@@ -96,7 +96,7 @@
 
 	<div class="flex z-50 h-full w-screen border-0 border-cyan-400 flex-col {debug}" transition:fade>
 		<div in:fade={{ duration: 2000 }}>
-			<div class="absolute h-full w-full bg-gradient-to-t from-gray-200 to-gray-400"></div>
+			<div class="absolute h-full w-full bg-gradient-to-t from-gray-500 via-white to-white"></div>
 			<div class="absolute flex h-full w-full items-center justify-center">
 				<div class="flex flex-col items-center">
 					<img
@@ -104,10 +104,10 @@
 						src="icons/hand-disk.png"
 						alt="Background"
 					/>
-					<div class="mt-4 w-[50vw] font-josefin text-lg text-center text-gray-600">
+					<div class="mt-4 w-[50vw] font-josefin text-lg text-center text-white">
 						Welcome to the Amiga file system inspector!
 					</div>
-					<div class=" w-[50vw] font-josefin text-lg text-center text-gray-400">
+					<div class=" w-[50vw] font-josefin text-lg text-center text-gray-200">
 						Drag and drop an ADF or HDF file anywhere on this window to browse files and
 						explore folders.
 					</div>
