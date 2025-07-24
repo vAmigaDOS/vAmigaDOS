@@ -102,7 +102,7 @@
 						Drag and drop an ADF or HDF file anywhere on this window to browse files and explore
 						folders.
 					</div>
-					<div class="font-josefin text-lg m-4 w-[50vw] text-center text-red-700">
+					<div class="font-josefin text-lg m-4 w-[50vw] text-center text-indigo-200">
 						This version is a pre-release. Please help improving this software by
 						<a class="underline" href="https://github.com/vAmigaDOS/vAmigaDOS/issues">filing a bug report</a>.
 					</div>
