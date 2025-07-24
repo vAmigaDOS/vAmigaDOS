@@ -39,7 +39,9 @@
 	let powerIcon = 'icons/powerIcon.png';
 	let resetIcon = 'icons/resetIcon.png';
 	let settingsIcon = 'icons/settingsIcon.png';
+	let diskIcon = 'icons/disk.png';
 	let shellIcon = 'icons/retroShellIcon.png';
+	let takeSnapshotIcon = 'icons/takeSnapshotIcon.png';
 	let monitorIcon = 'icons/monitorIcon.png';
 	let pauseIcon = $derived($running ? 'icons/pauseIcon.png' : 'icons/runIcon.png');
 	let port1Icon = $derived(portIcons[$port1]);
@@ -102,6 +104,11 @@
 					active={$layer === Layer.settings}
 				/>
 				-->
+				<SidebarButton
+					{select}
+					item={{ id: 'export', icon: diskIcon }}
+					active={false}
+				/>
 				<SidebarButton
 					{select}
 					item={{ id: 'shell', icon: shellIcon }}

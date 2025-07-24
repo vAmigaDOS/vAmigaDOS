@@ -6,7 +6,7 @@
 	import { db } from '$lib/Db/db';
 	import { liveQuery } from 'dexie';
 	import { Layer } from '$lib/types';
-	import { initialized, amiga, dfConnected, kickstarts } from '$lib/stores';
+	import { initialized, amiga, dfConnected, kickstarts, MsgConsoleDebugger } from '$lib/stores';
 	import { wasm, proxy, audio, config, gamepadManager } from '$lib/stores';
 	import { layer, poweredOn, what, errno } from '$lib/stores';
 	import { layout, showSidebar } from '$lib/stores';
@@ -21,7 +21,7 @@
 	import RetroShell from '$lib/RetroShell.svelte';
 	import MainScreen from '$lib/MainScreen.svelte';
 	import DropZone from '$lib/DropZone/DropZone.svelte';
-    import Guru from '$lib/Guru.svelte';
+	import Guru from '$lib/Guru.svelte';
 	import Proxy from '$lib/Proxy.svelte';
 	import Audio from '$lib/Globals/Audio.svelte';
 	import Config from '$lib/Globals/Config.svelte';
@@ -56,7 +56,9 @@
 		window.addEventListener('unhandledrejection', handleUncatchedRejection);
 	});
 
-	$: if (canvas) { resize(); }
+	$: if (canvas) {
+		resize();
+	}
 
 	$: if ($initialized) {
 		// Start render loop
@@ -97,8 +99,8 @@
 		}
 	}
 
-	function handleResizeEvent() {		
-        resize();
+	function handleResizeEvent() {
+		resize();
 	}
 
 	function handleUncatchedError(event: ErrorEvent) {
@@ -117,9 +119,28 @@
 		}
 	}
 
+	async function saveToHostFileSystem(defaultFilename: string, data: Uint8Array | string) {
+		const handle = await window.showSaveFilePicker({
+			suggestedName: defaultFilename,
+			types: [
+				{
+					description: 'Binary File',
+					accept: { 'application/octet-stream': ['.adf', '.hdf'] }
+				}
+			]
+		});
+
+		const writable = await handle.createWritable();
+		await writable.write(data); // Uint8Array or string
+		await writable.close();
+	}
+
 	function action(sender: string, state: boolean) {
-	
 		switch (sender) {
+			case 'export':
+				console.log('export');
+				saveToHostFileSystem('', "Hallo");
+				break;
 			case 'shell':
 				$layer = $layer == Layer.shell ? Layer.none : Layer.shell;
 				$showSidebar = false;
@@ -139,10 +160,10 @@
 			case 'pause':
 				try {
 					if ($amiga.isRunning()) {
-						console.log("Pausing...")
+						console.log('Pausing...');
 						$amiga.pause();
 					} else {
-						console.log("Running..:")
+						console.log('Running..:');
 						$amiga.run();
 					}
 				} catch (exc) {
@@ -238,28 +259,28 @@
 </script>
 
 <svelte:head>
-  <title>vAmigaDOS</title>
+	<title>vAmigaDOS</title>
 </svelte:head>
 
 <div class="h-screen overflow-y-auto scroll-smooth bg-black text-white">
-    <Guru />
-    {#if $wasm}
-    <Proxy bind:this={$proxy} />
-    {/if}
+	<Guru />
+	{#if $wasm}
+		<Proxy bind:this={$proxy} />
+	{/if}
 	{#if $initialized}
-    	<Config bind:this={$config} />
-        <Audio bind:this={$audio} />
-	    <GamepadManager bind:this={$gamepadManager} />
-        <MainScreen>
-            <StatusBar bind:this={statusBar} on:push={push}/>
-            <div bind:this={canvas} class="box relative grow border-none border-green-300 overflow-auto">
-                <TitleScreen/>
-                <Emulator bind:this={emulator}/>
-                <RetroShell/>
-                <Settings/>
-                <DropZone/>
-                <Sidebar {action}/>
-            </div>
-        </MainScreen>
+		<Config bind:this={$config} />
+		<Audio bind:this={$audio} />
+		<GamepadManager bind:this={$gamepadManager} />
+		<MainScreen>
+			<StatusBar bind:this={statusBar} on:push={push} />
+			<div bind:this={canvas} class="box relative grow overflow-auto border-none border-green-300">
+				<TitleScreen />
+				<Emulator bind:this={emulator} />
+				<RetroShell />
+				<Settings />
+				<DropZone />
+				<Sidebar {action} />
+			</div>
+		</MainScreen>
 	{/if}
 </div>
