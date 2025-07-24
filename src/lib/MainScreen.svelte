@@ -81,6 +81,7 @@
 	function handleDraggedDisk(blob: Uint8Array) {
 		$amiga.insertDisk(blob, 0);
 		$retroShell.importDf(0);
+		$layer = Layer.shell;
 		/*
 		$dragItem = blob;
 		$dragType = 'floppy';
@@ -91,6 +92,7 @@
 	function handleDraggedHardDrive(blob: Uint8Array) {
 		$amiga.attachHardDrive(blob, 0);
 		$retroShell.importHd(0, 0);
+		$layer = Layer.shell;
 		/*
 		$dragItem = blob;
 		$dragType = 'harddrive';
