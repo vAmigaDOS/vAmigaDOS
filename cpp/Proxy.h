@@ -302,6 +302,7 @@ struct RetroShellProxy
     void pressReturn() { TRY amiga->retroShell.press(RSKey::RETURN); CATCH }
     void pressTab() { TRY amiga->retroShell.press(RSKey::TAB); CATCH }
     void pressShiftReturn() { TRY amiga->retroShell.press(RSKey::RETURN, true); CATCH }
+    void type(const string &txt) { TRY amiga->retroShell.press(txt); CATCH }
     void importDf(int drive) { TRY amiga->retroShell.importDf((isize)drive); CATCH }
     void importHd(int drive, int part)  { TRY amiga->retroShell.importHd((isize)drive, part); CATCH }
 };

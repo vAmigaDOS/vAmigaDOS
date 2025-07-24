@@ -31,20 +31,6 @@
             textarea.scrollTop = textarea.scrollHeight;
         }
     }
-    /*
-    $: if ($MsgScriptDone) {
-        console.log('MsgScriptDone');
-    }
-    $: if ($MsgScriptPause) {
-        console.log('MsgScriptPause');
-    }
-    $: if ($MsgScriptAbort) {
-        console.log('MsgScriptAbort');
-    }
-    $: if ($MsgScriptWakeup) {
-        console.log('MsgScriptWakeup');
-    }
-    */
 
     function onKeyDown(e: KeyboardEvent)
     {
@@ -107,7 +93,7 @@
 
 {#if $layer === Layer.shell}
     <div class="absolute top-0 left-0 w-full h-full flex overflow-auto" transition:fade>
-        <div class="w-16 mr-1"></div>
+        <!-- <div class="w-16 mr-1"></div> -->
         <div class="bg-gray-500/75 grow h-full overflow-auto">
 		<textarea
                 bind:this={textarea}

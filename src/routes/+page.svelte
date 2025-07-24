@@ -122,6 +122,7 @@
 		switch (sender) {
 			case 'shell':
 				$layer = $layer == Layer.shell ? Layer.none : Layer.shell;
+				$showSidebar = false;
 				break;
 			case 'settings':
 				$layer = $layer == Layer.settings ? Layer.none : Layer.settings;
