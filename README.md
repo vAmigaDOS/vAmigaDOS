@@ -5,7 +5,7 @@
 
 # About 
 
-vAmiga.net is a web port of [vAmiga](https://dirkwhoffmann.github.io/vAmiga/), based on WASM, Svelte-Kit, Typescript and Tailwind. It emulates a Commodore Amiga 500, 1000 or 2000 in your browser.
+vAmigaDOS is a web port of [vAmiga](https://dirkwhoffmann.github.io/vAmiga/), based on WASM, Svelte-Kit, Typescript and Tailwind. It emulates a Commodore Amiga 500, 1000 or 2000 in your browser.
 
 # Deployment
 

@@ -237,10 +237,9 @@
 </script>
 
 <svelte:head>
-  <title>vAmiga.net</title>
+  <title>vAmigaDOS</title>
 </svelte:head>
 
-<!--<body>-->
 <div class="h-screen overflow-y-auto scroll-smooth bg-black text-white">
     <Guru />
     {#if $wasm}
@@ -263,4 +262,3 @@
         </MainScreen>
 	{/if}
 </div>
-<!--</body>-->

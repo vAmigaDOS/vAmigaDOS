@@ -9,6 +9,7 @@
 	import MdPowerSettingsNew from 'svelte-icons/md/MdPowerSettingsNew.svelte';
 	import GoLaw from 'svelte-icons/go/GoLaw.svelte';
 	import { Layer } from '$lib/types';
+	import Logo from '$lib/Widgets/Logo.svelte';
 	import MainPageLink from '$lib/Widgets/MainPageLink.svelte';
 	import Impressum from '$lib/Impressum.svelte';
 	import RomViewer from '$lib/RomViewer.svelte';
@@ -80,23 +81,22 @@
 </script>
 
 {#if !$poweredOn}
+	<!--
 	<div class="modal" class:modal-open={showRomViewer}>
 		<div class="modal-box h-2/3 w-2/3 max-w-none">
 			<RomViewer bind:show={showRomViewer} />
 		</div>
 	</div>
-
+	-->
 	<div class="modal" class:modal-open={showImpressum}>
 		<div class="modal-box">
 			<Impressum bind:show={showImpressum} />
 		</div>
 	</div>
 
-	<div class="flex h-full flex-col {debug}" transition:fade>
+	<div class="flex z-50 h-full w-screen border-0 border-cyan-400 flex-col {debug}" transition:fade>
 		<div in:fade={{ duration: 2000 }}>
-			<div class="absolute h-full">
-				<div class="h-full w-screen bg-gradient-to-t from-gray-200 to-gray-400"></div>
-			</div>
+			<div class="absolute h-full w-full bg-gradient-to-t from-gray-200 to-gray-400"></div>
 			<div class="absolute flex h-full w-full items-center justify-center">
 				<div class="flex flex-col items-center">
 					<img
@@ -121,46 +121,8 @@
 		</div>
 		{#if $layer === Layer.showcases}
 			<Showcases />
-		{:else}
-			<div
-				in:fade
-				class="relative flex grow flex-col items-center justify-center bg-transparent {debug}"
-			>
-				{#if $layer === Layer.none}
-					<div class={debug}>
-						<div class="flex justify-center rounded">
-							<img class="mt-3 h-24 p-2" src="va-icon.png" alt="vAmiga Icon" />
-							<div class="p-6 text-white">
-								<div class="flex">
-									<div class="font-sofia-extra mr-2 text-7xl">
-										vAmiga<span class="opacity-75">.net</span>
-									</div>
-								</div>
-								<div class="font-sofia-semi pb-10 pl-2 text-xl">Version 2.0 beta 2 (250723)</div>
-								<div class="flex space-x-5">
-									<div class="tooltip tooltip-primary" data-tip="Power On">
-										<button class="btn btn-lg btn-outline btn-square p-1.5" on:click={switchOn}>
-											<MdPowerSettingsNew />
-										</button>
-									</div>
-									<div class="tooltip tooltip-primary" data-tip="Run Demo">
-										<button class="btn btn-lg btn-outline btn-square p-1.5" on:click={runDemo}>
-											<GiBatMask />
-										</button>
-									</div>
-									<div class="tooltip tooltip-primary" data-tip="Visit GitHub">
-										<button class="btn btn-lg btn-outline btn-square p-1.5" on:click={gotoGitHub}>
-											<FaGithub />
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				{/if}
-			</div>
 		{/if}
-		<div class="relative flex justify-center space-x-4 bg-gray-900/50 align-middle {debug}">
+		<div class="absolute border-0 bottom-6 left-6 flex flex-col space-y-3 {debug}">
 			<MainPageLink onclick={openRoms}>
 				{#snippet icon()}
 					<div>
@@ -178,7 +140,7 @@
 					</div>
 				{/snippet}
 				{#snippet description()}
-					<div>Sources</div>
+					<div>Source Code</div>
 				{/snippet}
 			</MainPageLink>
 			<MainPageLink onclick={openImpressum}>
@@ -191,6 +153,9 @@
 					<div>Impressum</div>
 				{/snippet}
 			</MainPageLink>
+		</div>
+		<div class="absolute border-0 bottom-6 right-6 flex flex-col space-y-3 {debug}">
+			<Logo></Logo>
 		</div>
 	</div>
 {/if}

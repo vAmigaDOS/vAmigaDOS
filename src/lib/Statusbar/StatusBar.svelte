@@ -30,15 +30,6 @@
 	import WarpControl from './WarpControl.svelte';
 	import FileDialog from '$lib/Utils/FileDialog.svelte';
 
-	/*
-	interface Props {
-		connected: boolean[];
-	}
-	let {
-		connected = [false, false, false, false],
-	}: Props = $props();
-	*/
-
 	// Bindings
 	let speedometer: Speedometer;
 	let fdialog: FileDialog;
@@ -46,7 +37,7 @@
 	let muteIcon = $derived($muted || $warp);
 	let debugIcon = $derived($track);
 	let haltIcon = $derived($halted);
-	
+
 	const bg = 'bg-gradient-to-t from-primary to-primary/80';
 
 	export function update(animationFrame: number, now: DOMHighResTimeStamp) {
@@ -63,16 +54,15 @@
 	}
 
 	function dfMenuAction(df: number, tag: number) {
-        switch (tag) {
+		switch (tag) {
 			case 0:
 				fdialog.open().then(
 					function (value) {
-						
-                        // Insert disk
+						// Insert disk
 						$amiga.insertDisk(value, df);
 
-                        // Start emulation if necessary
-                        if (!$amiga.running) $amiga.run();
+						// Start emulation if necessary
+						if (!$amiga.running) $amiga.run();
 					},
 					function (error) {
 						console.log('error', error);
@@ -103,7 +93,7 @@
 			default:
 				console.warn('Invalid menu item', tag);
 		}
-	}	
+	}
 </script>
 
 <FileDialog bind:this={fdialog}></FileDialog>
@@ -120,6 +110,7 @@
 		</button>
 	</BarBox>
 	<div class="flex grow border-0 border-red-500">
+		<!--
 		{#each Array(4) as _, i}
 			{#if $dfConnected[i]}
 				<FloppyDriveInfo
@@ -146,7 +137,9 @@
 				/>
 			{/if}
 		{/each}
+	-->
 	</div>
+	<!--
 	{#if haltIcon}
 		<StatusIcon src="icons/halt.png" />
 	{/if}
@@ -158,4 +151,5 @@
 	{/if}
 	<WarpControl />
 	<Speedometer bind:this={speedometer} />
+	-->
 </div>
