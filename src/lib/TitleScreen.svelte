@@ -25,8 +25,8 @@
 	}
 
 	onMount(() => {
-		console.log("TitleScreen::onMount()");
-		
+		console.log('TitleScreen::onMount()');
+
 		// Prefetch some images
 		new Image().src = 'footage/3ddemo-small.jpg';
 		new Image().src = 'footage/batmanrises-small.jpg';
@@ -58,7 +58,7 @@
 	}
 
 	function gotoGitHub() {
-		window.location.href = "https://github.com/dirkwhoffmann/vAmigaNet";
+		window.location.href = 'https://github.com/dirkwhoffmann/vAmigaNet';
 		// goto('https://dirkwhoffmann.github.io/vAmiga');
 	}
 
@@ -95,11 +95,23 @@
 	<div class="flex h-full flex-col {debug}" transition:fade>
 		<div in:fade={{ duration: 2000 }}>
 			<div class="absolute h-full">
-				<div class="h-full w-screen bg-gradient-to-t from-indigo-400 to-indigo-800"></div>
+				<div class="h-full w-screen bg-gradient-to-t from-gray-200 to-gray-400"></div>
 			</div>
-
-			<div class="absolute h-full blur-xs">
-				<img class="h-full w-screen object-fill opacity-60" src="matrix.jpg" alt="Background" />
+			<div class="absolute flex h-full w-full items-center justify-center">
+				<div class="flex flex-col items-center">
+					<img
+						class="h-[50vh] w-auto object-contain opacity-100"
+						src="icons/hand-disk.png"
+						alt="Background"
+					/>
+					<div class="mt-4 w-[50vw] font-josefin text-lg text-center text-gray-600">
+						Welcome to the Amiga file system inspector!
+					</div>
+					<div class=" w-[50vw] font-josefin text-lg text-center text-gray-400">
+						Drag and drop an ADF or HDF file anywhere on this window to browse files and
+						explore folders.
+					</div>
+				</div>
 			</div>
 			<!--
         <div class="absolute h-full">
@@ -159,26 +171,26 @@
 					<div>Kickstart</div>
 				{/snippet}
 			</MainPageLink>
-            <MainPageLink onclick={openShowcases}>
-                {#snippet icon()}
-                    <div>
-                    <DiGrails/>
-                    </div>
-                    {/snippet}
+			<MainPageLink onclick={openShowcases}>
+				{#snippet icon()}
+					<div>
+						<DiGrails />
+					</div>
+				{/snippet}
 				{#snippet description()}
-                <div>Showcases</div>
-                {/snippet} 
-            </MainPageLink>
-            <MainPageLink onclick={openImpressum}>
-                {#snippet icon()}
-                    <div>
-                        <GoLaw />
-                    </div>
-                {/snippet}
-                {#snippet description()}
-                    <div>Impressum</div>
-                {/snippet}
-            </MainPageLink>
+					<div>Showcases</div>
+				{/snippet}
+			</MainPageLink>
+			<MainPageLink onclick={openImpressum}>
+				{#snippet icon()}
+					<div>
+						<GoLaw />
+					</div>
+				{/snippet}
+				{#snippet description()}
+					<div>Impressum</div>
+				{/snippet}
+			</MainPageLink>
 		</div>
 	</div>
 {/if}
