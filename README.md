@@ -25,10 +25,10 @@ across platforms.
 # To build the project locally...
 
 # Clone the project
-git clone https://github.com/dirkwhoffmann/vAmigaNet.git
+git clone https://github.com/vAmigaDOS/vAmigaDOS.git
 
 # Install components
-cd vAmigaNet 
+cd vAmigaDOS 
 npm install
 
 # Setup a build directory
