@@ -447,6 +447,9 @@ public:
     void import(const HardDrive &hdn, isize part);
     void importDf(isize n);
     void importHd(isize n, isize part);
+
+    // Exports the file system
+    void exportBlocks(fs::path path);
 };
 
 }

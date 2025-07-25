@@ -782,7 +782,8 @@ EMSCRIPTEN_BINDINGS(RetroShellProxy)
         .function("pressKey", &RetroShellProxy::pressKey)
         .function("type", &RetroShellProxy::type)
         .function("importDf", &RetroShellProxy::importDf)
-        .function("importHd", &RetroShellProxy::importHd);
+        .function("importHd", &RetroShellProxy::importHd)
+        .function("exportBlocks", &RetroShellProxy::exportBlocks);
 }
 
 EMSCRIPTEN_BINDINGS(Constants)

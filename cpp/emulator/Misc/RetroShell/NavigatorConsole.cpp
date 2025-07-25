@@ -46,13 +46,20 @@ NavigatorConsole::getPrompt()
 void
 NavigatorConsole::welcome()
 {
-    storage << "vAmigaDOS File System Navigator ";
-    *this << Amiga::build() << '\n';
-    *this << '\n';
+    if (vAmigaDOS) {
 
-    *this << "Copyright (C) Dirk W. Hoffmann. www.dirkwhoffmann.de" << '\n';
-    *this << "https://github.com/dirkwhoffmann/vAmiga" << '\n';
-    *this << '\n';
+        storage << "File System Navigator ";
+        *this << Amiga::build() << '\n';
+        *this << '\n';
+
+        *this << "Copyright (C) Dirk W. Hoffmann. www.dirkwhoffmann.de" << '\n';
+        *this << "https://github.com/vAmigaDOS/vAmigaDOS" << '\n';
+        *this << '\n';
+
+    } else {
+
+        Console::welcome();
+    }
 }
 
 void
@@ -300,6 +307,12 @@ NavigatorConsole::importHd(isize n, isize part)
 {
     assert(n >= 0 && n <= 3);
     import(*amiga.hd[n], part);
+}
+
+void
+NavigatorConsole::exportBlocks(fs::path path)
+{
+    fs.exportBlocks(path);
 }
 
 FSBlock &

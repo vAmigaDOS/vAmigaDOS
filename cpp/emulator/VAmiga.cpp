@@ -1838,6 +1838,13 @@ RetroShellAPI::importHd(isize n, isize part)
 }
 
 void
+RetroShellAPI::exportBlocks(const std::filesystem::path &path)
+{
+    VAMIGA_PUBLIC_SUSPEND
+    retroShell->navigator.exportBlocks(path);
+}
+
+void
 RetroShellAPI::setStream(std::ostream &os)
 {
     VAMIGA_PUBLIC_SUSPEND

@@ -33,7 +33,7 @@ RetroShell::_initialize()
     current = &debugger;
 
     // Print the welcome message
-    current->exec("navigator");
+    current->exec(INITIAL_CONSOLE);
 }
 
 void

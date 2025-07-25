@@ -6,7 +6,14 @@
 	import { db } from '$lib/Db/db';
 	import { liveQuery } from 'dexie';
 	import { Layer } from '$lib/types';
-	import { initialized, amiga, dfConnected, kickstarts, MsgConsoleDebugger } from '$lib/stores';
+	import {
+		initialized,
+		amiga,
+		dfConnected,
+		kickstarts,
+		MsgConsoleDebugger,
+		retroShell
+	} from '$lib/stores';
 	import { wasm, proxy, audio, config, gamepadManager } from '$lib/stores';
 	import { layer, poweredOn, what, errno } from '$lib/stores';
 	import { layout, showSidebar } from '$lib/stores';
@@ -139,7 +146,23 @@
 		switch (sender) {
 			case 'export':
 				console.log('export');
-				saveToHostFileSystem('', "Hallo");
+				try {
+					console.log('Exporting file system...');
+					$retroShell.exportBlocks('blob');
+					console.log('Reading data...');
+					console.log($wasm.FS.readdir('/'));
+					console.log($wasm.FS.analyzePath('/blob'));
+					const data = $wasm.FS.readFile('/blob');
+					console.log('data: ', data);
+					console.log('Save to host file system...');
+					saveToHostFileSystem('', data);
+					console.log(`File system successfully exported`);
+				} catch (err) {
+					console.error('Export failed!');
+				    console.error('Error object:', err);
+				    console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
+				    console.log('FS contents:', $wasm.FS.readdir('/'));
+				}
 				break;
 			case 'shell':
 				$layer = $layer == Layer.shell ? Layer.none : Layer.shell;

@@ -1471,6 +1471,10 @@ public:
     void importDf(isize n);
     void importHd(isize n, isize part);
 
+    /** @brief  Exports the file system in the file system navigator
+     */
+    void exportBlocks(const std::filesystem::path &path);
+
     /// @}
 };
 
