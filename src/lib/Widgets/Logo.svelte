@@ -6,7 +6,7 @@
 	let { shadow = false }: Props = $props();
 </script>
 
-<div class="pointer-events-none">
+<a href="https://dirkwhoffmann.github.io/vAmiga/" target="_blank" rel="noopener noreferrer">
 	<!--<div class="z-50 absolute bottom-0 right-0 p-4">-->
 	<div class="w-full border-0">
 		<div class="flex items-center">
@@ -19,4 +19,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</a>

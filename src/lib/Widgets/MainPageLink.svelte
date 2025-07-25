@@ -8,16 +8,19 @@
 		description: import('svelte').Snippet;
 		onclick?: () => void;
 	} = $props();
+
+	const iconSize = 'h-10 w-10'
+	const fontColor = 'text-gray-300'
 </script>
 
 <div class="flex w-24 border-0 flex-col items-center justify-center">
 	<button
-		class="flex h-6 w-6 border-0 flex-col items-center justify-center text-gray-600"
+		class="flex {iconSize} border-0 flex-col items-center justify-center {fontColor}"
 		{onclick}
 	>
 		{@render icon()}
 	</button>
-	<div class="font-josefin flex border-none text-xs text-gray-600">
+	<div class="font-josefin flex border-none {fontColor}">
 		{@render description()}
 	</div>
 </div>
