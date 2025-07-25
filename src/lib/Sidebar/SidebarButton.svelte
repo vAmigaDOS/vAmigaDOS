@@ -26,16 +26,14 @@
 		onoff = toggle ? !onoff : true;
 		select((e.target as HTMLElement).id, onoff);
 	}
-	
+
 	function onmouseenter(e: Event) {
-		console.log('onmouseenter');
 		setTimeout(() => {
 			ttStyle = 'tooltip tooltip-right tooltip-primary';
 		}, 700);
 	}
 
 	function onmouseleave(e: Event) {
-		console.log('onmouseleave');
 		ttStyle = '';
 	}
 </script>
