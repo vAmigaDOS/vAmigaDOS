@@ -125,7 +125,10 @@
         running,
         track,
         warp,
-        warpMode
+        warpMode,
+
+		MsgRshExport
+
     } from "$lib/stores";
     import { db } from '$lib/Db/db';
     import { Opt } from "./types";
@@ -717,6 +720,9 @@
                 }
                 break;
 
+            case $wasm.MSG_RSH_EXPORT:
+                console.log("MSG_RSH_EXPORT");
+                $MsgRshExport++;
             default:
                 break;
         }

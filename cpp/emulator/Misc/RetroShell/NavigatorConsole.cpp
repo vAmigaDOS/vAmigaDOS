@@ -1018,6 +1018,8 @@ NavigatorConsole::initCommands(RSCommand &root)
         }
     });
 
+#ifndef VAMIGA_DOS
+
     root.add({
 
         .tokens = { "block", "export" },
@@ -1034,6 +1036,26 @@ NavigatorConsole::initCommands(RSCommand &root)
             fs.exportBlock(nr, path);
         }
     });
+
+#else 
+
+    root.add({
+
+        .tokens = { "block", "export" },
+        .chelp  = { "Export a block to a file" },
+        .args   = {
+            { .name = { "nr", "Block number" }, .flags = rs::opt },
+        },
+        .func   = [&] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
+
+            auto nr = parseBlock(args, "nr", fs.pwd().nr);
+
+            fs.exportBlock(nr, "block.raw");
+            msgQueue.put(Msg::RSH_EXPORT);
+        }
+    });
+
+#endif
 
     RSCommand::currentGroup = "Modify";
 

@@ -170,3 +170,4 @@ export const MsgSrvState = writable(0);
 export const MsgSrvReceive = writable(0);
 export const MsgSrvSend = writable(0);
 export const MsgAlarm = writable(0);
+export const MsgRshExport = writable(0);

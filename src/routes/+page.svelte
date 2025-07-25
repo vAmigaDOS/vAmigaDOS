@@ -14,6 +14,7 @@
 		MsgConsoleDebugger,
 		retroShell
 	} from '$lib/stores';
+	import { MsgRshExport } from '$lib/stores';
 	import { wasm, proxy, audio, config, gamepadManager } from '$lib/stores';
 	import { layer, poweredOn, what, errno } from '$lib/stores';
 	import { layout, showSidebar } from '$lib/stores';
@@ -63,14 +64,18 @@
 		window.addEventListener('unhandledrejection', handleUncatchedRejection);
 	});
 
-	$: if (canvas) {
-		resize();
-	}
+	$effect(() => {
+		if (canvas) {
+			resize();
+		}
+	});
 
-	$: if ($initialized) {
-		// Start render loop
-		window.requestAnimationFrame(doAnimationFrame);
-	}
+	$effect(() => {
+		if ($initialized) {
+			// Start render loop
+			window.requestAnimationFrame(doAnimationFrame);
+		}
+	});
 
 	function doAnimationFrame(now: DOMHighResTimeStamp) {
 		animationFrame++;
@@ -142,6 +147,27 @@
 		await writable.close();
 	}
 
+	$effect(() => {
+		let cnt = $MsgRshExport;
+
+		console.log('MsgRshExport received', cnt);
+		if (!$initialized) return; 
+		try {
+			console.log('Reading data...');
+			console.log($wasm.FS.readdir('/'));
+			console.log($wasm.FS.analyzePath('/blob'));
+			const data = $wasm.FS.readFile('/block.raw');
+			console.log('data: ', data);
+			console.log('Save to host file system...');
+			saveToHostFileSystem('', data);
+			console.log(`Block successfully exported`);
+		} catch (err) {
+			console.error('Export failed!', err);
+			console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
+			console.log('FS contents:', $wasm.FS.readdir('/'));
+		}
+	});
+
 	function action(sender: string, state: boolean) {
 		switch (sender) {
 			case 'export':
@@ -159,9 +185,9 @@
 					console.log(`File system successfully exported`);
 				} catch (err) {
 					console.error('Export failed!');
-				    console.error('Error object:', err);
-				    console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
-				    console.log('FS contents:', $wasm.FS.readdir('/'));
+					console.error('Error object:', err);
+					console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
+					console.log('FS contents:', $wasm.FS.readdir('/'));
 				}
 				break;
 			case 'shell':

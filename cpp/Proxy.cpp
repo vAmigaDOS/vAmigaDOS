@@ -35,6 +35,7 @@ EMSCRIPTEN_BINDINGS(EnumClasses)
         .value("RSH_SWITCH", Msg::RSH_SWITCH)
         .value("RSH_WAIT", Msg::RSH_WAIT)
         .value("RSH_ERROR", Msg::RSH_ERROR)
+        .value("RSH_EXPORT", Msg::RSH_EXPORT)
         .value("VIDEO_FORMAT", Msg::VIDEO_FORMAT)
         .value("OVERCLOCKING", Msg::OVERCLOCKING)
         .value("GUARD_UPDATED", Msg::GUARD_UPDATED)
@@ -892,6 +893,7 @@ EMSCRIPTEN_BINDINGS(Keys)
     constant("MSG_CONSOLE_SWITCH", (int)Msg::RSH_SWITCH);
     constant("MSG_CONSOLE_WAIT", (int)Msg::RSH_WAIT);
     constant("MSG_CONSOLE_ERROR", (int)Msg::RSH_ERROR);
+    constant("MSG_CONSOLE_EXPORT", (int)Msg::RSH_EXPORT);
     constant("MSG_VIDEO_FORMAT", (int)Msg::VIDEO_FORMAT);
     constant("MSG_OVERCLOCKING", (int)Msg::OVERCLOCKING);
     constant("MSG_GUARD_UPDATED", (int)Msg::GUARD_UPDATED);
@@ -944,6 +946,7 @@ EMSCRIPTEN_BINDINGS(Keys)
     constant("MSG_SRV_RECEIVE", (int)Msg::SRV_RECEIVE);
     constant("MSG_SRV_SEND", (int)Msg::SRV_SEND);
     constant("MSG_ALARM", (int)Msg::ALARM);
+    constant("MSG_RSH_EXPORT", (int)Msg::RSH_EXPORT);
 
     // Options
     constant("OPT_HOST_REFRESH_RAT", (int)Opt::HOST_REFRESH_RATE);
