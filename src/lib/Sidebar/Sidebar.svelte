@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { Layer } from '$lib/types';
 	import SidebarButton from '$lib/Sidebar/SidebarButton.svelte';
-	import SidebarSection from '$lib/Sidebar/SidebarSection.svelte';
 	import { fade } from 'svelte/transition';
-	import SidebarPad from '$lib/Sidebar/SidebarPad.svelte';
 	import {
-		debugDma,
 		layer,
 		layout,
 		port1,
 		port2,
-		poweredOn,
 		running,
 		showSidebar
 	} from '$lib/stores';
@@ -72,60 +68,26 @@
 		{ id: 'fit', icon: 'icons/layoutFitIcon.png' },
 		{ id: 'full', icon: 'icons/layoutFullIcon.png' }
 	];
+
+	const shellTooltip = $derived($layer === Layer.shell ? 'Close the command shell' : 'Open the command shell')
 </script>
 
 {#if $showSidebar}
 	<div transition:fade={{ duration }} class="">
 		<div class="bg-base-100/0 absolute top-0 left-0 z-40 flex w-16 flex-col pl-2">
 			<div class="mt-1.5 mb-2 flex flex-col space-y-1.5 border-0">
-				<!--
-				<SidebarButton {select} item={{ id: 'power', icon: powerIcon }} />
-				{#if $poweredOn}
-					<SidebarButton {select} item={{ id: 'pause', icon: pauseIcon }} />
-					<SidebarButton {select} item={{ id: 'reset', icon: resetIcon }} />
-				{/if}
-				<SidebarPad />
-				<SidebarSection
-					{select}
-					expanded={sel === 'port1'}
-					item={{ id: 'port1', icon: port1Icon }}
-					subitems={port1Items}
-				/>
-				<SidebarSection
-					{select}
-					expanded={sel === 'port2'}
-					item={{ id: 'port2', icon: port2Icon }}
-					subitems={port2Items}
-				/>
-				<SidebarPad />
-				<SidebarButton
-					{select}
-					item={{ id: 'settings', icon: settingsIcon }}
-					active={$layer === Layer.settings}
-				/>
-				-->
 				<SidebarButton
 					{select}
 					item={{ id: 'export', icon: diskIcon }}
 					active={false}
+					tooltip='Export the file system'
 				/>
 				<SidebarButton
 					{select}
 					item={{ id: 'shell', icon: shellIcon }}
 					active={$layer === Layer.shell}
+					tooltip={shellTooltip}
 				/>
-				<!--
-				<SidebarPad />
-				{#if $poweredOn}
-					<SidebarSection
-						{select}
-						expanded={sel === 'layout'}
-						item={{ id: 'layout', icon: layoutIcon }}
-						subitems={layoutItems}
-					/>
-					<SidebarButton {select} item={{ id: 'monitor', icon: monitorIcon }} active={$debugDma} />
-				{/if}
-				-->
 			</div>
 		</div>
 	</div>
