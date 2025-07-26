@@ -302,7 +302,7 @@ EMSCRIPTEN_BINDINGS(Structures)
         .field("patched", &RomTraits::patched)
         .field("relocated", &RomTraits::relocated);
     */
-    
+
     value_object<TextureWrapper>("TextureWrapper")
         .field("frameNr", &TextureWrapper::frameNr)
         .field("data", &TextureWrapper::data)
@@ -357,7 +357,7 @@ AmigaProxy::AmigaProxy()
 {
     TRY
 
-    amiga = new VAmiga();
+        amiga = new VAmiga();
 
     // DEPRECATED (REMOVE ASAP)
     /*
@@ -380,10 +380,12 @@ Message AmigaProxy::readMessage()
 {
     Message msg;
 
-    if (!amiga->getMsg(msg))
+    if (!amiga->msgQueue.getMsg(msg))
     {
         msg.type = Msg(0);
-    } else {
+    }
+    else
+    {
         // printf("Message: %s [%llx]\n", MsgEnum::key(msg.type), msg.value);
     }
     return msg;
@@ -392,7 +394,6 @@ Message AmigaProxy::readMessage()
 int AmigaProxy::getFileType(const string &blob)
 {
     TRY
-    printf("AmigaProxy::getFileType(%s)\n", blob.c_str());
     return (int)MediaFile::type(blob);
     CATCH
 }
@@ -404,23 +405,27 @@ bool AmigaProxy::insertDisk(const string &blob, u8 drive)
     auto data = (u8 *)blob.data();
     auto length = (isize)blob.length();
 
-    if (auto file = MediaFile::make(data, length, FileType::ADF); file) {
-    
+    if (auto file = MediaFile::make(data, length, FileType::ADF); file)
+    {
+
         amiga->df[drive]->insertMedia(*file, false);
         return true;
     }
-    if (auto file = MediaFile::make(data, length, FileType::EADF); file) {
-    
+    if (auto file = MediaFile::make(data, length, FileType::EADF); file)
+    {
+
         amiga->df[drive]->insertMedia(*file, false);
         return true;
     }
-    if (auto file = MediaFile::make(data, length, FileType::EXE); file) {
-    
+    if (auto file = MediaFile::make(data, length, FileType::EXE); file)
+    {
+
         amiga->df[drive]->insertMedia(*file, false);
         return true;
     }
-    if (auto file = MediaFile::make(data, length, FileType::DMS); file) {
-    
+    if (auto file = MediaFile::make(data, length, FileType::DMS); file)
+    {
+
         amiga->df[drive]->insertMedia(*file, false);
         return true;
     }
@@ -433,11 +438,12 @@ bool AmigaProxy::attachHardDrive(const string &blob, u8 drive)
 {
     TRY
 
-    auto data = (u8 *)blob.data();
+        auto data = (u8 *)blob.data();
     auto length = (isize)blob.length();
 
-    if (auto file = MediaFile::make(data, length, FileType::HDF); file) {
-    
+    if (auto file = MediaFile::make(data, length, FileType::HDF); file)
+    {
+
         amiga->hd[drive]->attach(*file);
         return true;
     }
@@ -449,7 +455,7 @@ bool AmigaProxy::attachHardDrive(const string &blob, u8 drive)
 void AmigaProxy::setAlarmAbs(int frames, int payload)
 {
     TRY
-    Cycle trigger = (Cycle)frames * PAL::CLK_FREQUENCY / 50;
+        Cycle trigger = (Cycle)frames * PAL::CLK_FREQUENCY / 50;
     amiga->put(Cmd::ALARM_ABS, AlarmCmd{trigger, payload});
     CATCH
 };
@@ -457,7 +463,7 @@ void AmigaProxy::setAlarmAbs(int frames, int payload)
 void AmigaProxy::setAlarmRel(int frames, int payload)
 {
     TRY
-    Cycle trigger = (Cycle)frames * PAL::CLK_FREQUENCY / 50;
+        Cycle trigger = (Cycle)frames * PAL::CLK_FREQUENCY / 50;
     amiga->put(Cmd::ALARM_REL, AlarmCmd{trigger, payload});
     CATCH
 };
@@ -469,6 +475,7 @@ EMSCRIPTEN_BINDINGS(AmigaProxy)
         .function("readMessage", &AmigaProxy::readMessage)
         .function("lockMsgQueue", &AmigaProxy::lockMsgQueue)
         .function("unlockMsgQueue", &AmigaProxy::unlockMsgQueue)
+        .function("getPayload", &AmigaProxy::getPayload)
 
         .function("launch", &AmigaProxy::launch)
         .function("wakeUp", &AmigaProxy::wakeUp)
@@ -513,7 +520,7 @@ EMSCRIPTEN_BINDINGS(AmigaProxy)
 
 //
 // AudioPort proxy
-// 
+//
 
 void AudioPortProxy::updateAudio(int offset)
 {
@@ -667,7 +674,7 @@ MemoryProxy::analyzeRom(const string &blob, u32 len)
 {
     TRY
 
-    u32 crc32 = util::crc32((const u8 *)blob.data(), len);
+        u32 crc32 = util::crc32((const u8 *)blob.data(), len);
     auto traits = Memory::getRomTraits(crc32);
 
     RomInfo info{};
@@ -1152,5 +1159,4 @@ EMSCRIPTEN_BINDINGS(Keys)
     // VideoFormat
     constant("TV_PAL", (int)TV::PAL);
     constant("TV_NTSC", (int)TV::NTSC);
- 
 };

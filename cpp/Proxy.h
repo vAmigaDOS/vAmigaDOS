@@ -86,8 +86,9 @@ struct AmigaProxy
 
     // Handling messages
     Message readMessage();
-    void lockMsgQueue() { return amiga->lockMsgQueue(); }
-    void unlockMsgQueue() { return amiga->unlockMsgQueue(); }
+    void lockMsgQueue() { return amiga->msgQueue.lockMsgQueue(); }
+    void unlockMsgQueue() { return amiga->msgQueue.unlockMsgQueue(); }
+    string getPayload(int index) { return amiga->msgQueue.getPayload(index); }
 
     // Handling exceptions
     int errorCode() { return ::errorCode; }

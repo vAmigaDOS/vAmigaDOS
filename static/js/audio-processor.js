@@ -4,7 +4,7 @@ class AudioProcessor extends AudioWorkletProcessor {
 	offset = 0;
 
 	constructor(options) {
-		console.log('constructor');
+		console.log('AudioProcessor: constructor');
 		super(options);
 
 		this.port.onmessage = this.messages.bind(this);

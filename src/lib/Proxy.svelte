@@ -721,7 +721,6 @@
                 break;
 
             case $wasm.MSG_RSH_EXPORT:
-                console.log("MSG_RSH_EXPORT");
                 $MsgRshExport++;
             default:
                 break;

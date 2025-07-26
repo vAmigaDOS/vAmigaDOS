@@ -131,6 +131,23 @@
 		}
 	}
 
+	async function saveToHost(defaultName: string, accept: string[], data: Uint8Array | string) {
+		const handle = await window.showSaveFilePicker({
+			suggestedName: defaultName,
+			types: [
+				{
+					description: 'Binary File',
+					accept: { 'application/octet-stream': accept }
+				}
+			]
+		});
+
+		const writable = await handle.createWritable();
+		await writable.write(data); // Uint8Array or string
+		await writable.close();
+	}
+
+	// DEPRECATED
 	async function saveToHostFileSystem(defaultFilename: string, data: Uint8Array | string) {
 		const handle = await window.showSaveFilePicker({
 			suggestedName: defaultFilename,
@@ -147,24 +164,30 @@
 		await writable.close();
 	}
 
+	function myJsFunction(a: string, b: string) {
+		console.log('myJsFunction called with:', a, b);
+		// Your logic here
+	}
+
 	$effect(() => {
 		let cnt = $MsgRshExport;
+		if (cnt == 0) return;
 
-		console.log('MsgRshExport received', cnt);
-		if (!$initialized) return; 
 		try {
-			console.log('Reading data...');
-			console.log($wasm.FS.readdir('/'));
-			console.log($wasm.FS.analyzePath('/blob'));
-			const data = $wasm.FS.readFile('/block.raw');
-			console.log('data: ', data);
-			console.log('Save to host file system...');
-			saveToHostFileSystem('', data);
-			console.log(`Block successfully exported`);
+			const wasmName = $amiga.getPayload(0);
+			const proposedName = $amiga.getPayload(1);
+
+			console.log('Export payload: ', wasmName, proposedName);
+
+			// Read file from the browser file system
+			const data = $wasm.FS.readFile(wasmName);
+
+			// Save file to the host file system
+			saveToHost(proposedName, ['.bin'], data);
 		} catch (err) {
-			console.error('Export failed!', err);
+			console.error('Export failed: ', err);
 			console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
-			console.log('FS contents:', $wasm.FS.readdir('/'));
+			console.log('FS.readdir:', $wasm.FS.readdir('/'));
 		}
 	});
 

@@ -1018,44 +1018,44 @@ NavigatorConsole::initCommands(RSCommand &root)
         }
     });
 
-#ifndef VAMIGA_DOS
+    if constexpr (wasmBuild) {
 
-    root.add({
+        root.add({
 
-        .tokens = { "block", "export" },
-        .chelp  = { "Export a block to a file" },
-        .args   = {
-            { .name = { "nr", "Block number" }, .flags = rs::opt },
-            { .name = { "path", "File path" } },
-        },
-        .func   = [&] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
+            .tokens = { "block", "export" },
+            .chelp  = { "Export a block to a file" },
+            .args   = {
+                { .name = { "nr", "Block number" }, .flags = rs::opt },
+            },
+                .func   = [&] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
 
-            auto path = host.makeAbsolute(args.at("path"));
-            auto nr = parseBlock(args, "nr", fs.pwd().nr);
+                    auto nr = parseBlock(args, "nr", fs.pwd().nr);
+                    fs.exportBlock(nr, "blob");
 
-            fs.exportBlock(nr, path);
-        }
-    });
+                    msgQueue.setPayload( { "blob", std::to_string(nr) + ".bin" } );
+                    msgQueue.put(Msg::RSH_EXPORT);
+                }
+        });
 
-#else 
+    } else {
 
-    root.add({
+        root.add({
 
-        .tokens = { "block", "export" },
-        .chelp  = { "Export a block to a file" },
-        .args   = {
-            { .name = { "nr", "Block number" }, .flags = rs::opt },
-        },
-        .func   = [&] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
+            .tokens = { "block", "export" },
+            .chelp  = { "Export a block to a file" },
+            .args   = {
+                { .name = { "nr", "Block number" }, .flags = rs::opt },
+                { .name = { "path", "File path" } },
+            },
+                .func   = [&] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
 
-            auto nr = parseBlock(args, "nr", fs.pwd().nr);
+                    auto path = host.makeAbsolute(args.at("path"));
+                    auto nr = parseBlock(args, "nr", fs.pwd().nr);
 
-            fs.exportBlock(nr, "block.raw");
-            msgQueue.put(Msg::RSH_EXPORT);
-        }
-    });
-
-#endif
+                    fs.exportBlock(nr, path);
+                }
+        });
+    };
 
     RSCommand::currentGroup = "Modify";
 

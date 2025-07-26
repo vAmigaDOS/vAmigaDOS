@@ -44,7 +44,7 @@ enum class Msg : long
     RSH_SWITCH,         ///< RetroShell has switched to another console
     RSH_WAIT,           ///< Execution has peen postponed due to a wait command
     RSH_ERROR,          ///< Command execution has been aborted due to an error
-    RSH_EXPORT, 
+    RSH_EXPORT,         ///< Data has been exported to the file system
 
     // Amiga
     VIDEO_FORMAT,
