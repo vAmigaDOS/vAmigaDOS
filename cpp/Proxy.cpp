@@ -89,179 +89,6 @@ EMSCRIPTEN_BINDINGS(EnumClasses)
         .value("SRV_SEND", Msg::SRV_SEND)
         .value("ALARM", Msg::ALARM);
 
-    /*
-    enum_<Opt>("Opt")
-        .value("HOST_REFRESH_RATE", Opt::HOST_REFRESH_RATE)
-        .value("HOST_SAMPLE_RATE", Opt::HOST_SAMPLE_RATE)
-        .value("HOST_FRAMEBUF_WIDTH", Opt::HOST_FRAMEBUF_WIDTH)
-        .value("HOST_FRAMEBUF_HEIGHT", Opt::HOST_FRAMEBUF_HEIGHT)
-
-        .value("AMIGA_VIDEO_FORMAT", Opt::AMIGA_VIDEO_FORMAT)
-        .value("AMIGA_WARP_BOOT", Opt::AMIGA_WARP_BOOT)
-        .value("AMIGA_WARP_MODE", Opt::AMIGA_WARP_MODE)
-        .value("AMIGA_VSYNC", Opt::AMIGA_VSYNC)
-        .value("AMIGA_SPEED_BOOST", Opt::AMIGA_SPEED_BOOST)
-        .value("AMIGA_RUN_AHEAD", Opt::AMIGA_RUN_AHEAD)
-
-        .value("AMIGA_SNAP_AUTO", Opt::AMIGA_SNAP_AUTO)
-        .value("AMIGA_SNAP_DELAY", Opt::AMIGA_SNAP_DELAY)
-        .value("AMIGA_SNAP_COMPRESSOR", Opt::AMIGA_SNAP_COMPRESSOR)
-
-        .value("AMIGA_WS_COMPRESSION", Opt::AMIGA_WS_COMPRESSION)
-
-        .value("AGNUS_REVISION", Opt::AGNUS_REVISION)
-        .value("AGNUS_PTR_DROPS", Opt::AGNUS_PTR_DROPS)
-
-        .value("DENISE_REVISION", Opt::DENISE_REVISION)
-        .value("DENISE_VIEWPORT_TRACKING", Opt::DENISE_VIEWPORT_TRACKING)
-        .value("DENISE_HIDDEN_SPRITES", Opt::DENISE_HIDDEN_SPRITES)
-        .value("DENISE_HIDDEN_LAYERS", Opt::DENISE_HIDDEN_LAYERS)
-        .value("DENISE_HIDDEN_LAYER_ALPHA", Opt::DENISE_HIDDEN_LAYER_ALPHA)
-        .value("DENISE_CLX_SPR_SPR", Opt::DENISE_CLX_SPR_SPR)
-        .value("DENISE_CLX_SPR_PLF", Opt::DENISE_CLX_SPR_PLF)
-        .value("DENISE_CLX_PLF_PLF", Opt::DENISE_CLX_PLF_PLF)
-
-        .value("MON_PALETTE", Opt::MON_PALETTE)
-        .value("MON_BRIGHTNESS", Opt::MON_BRIGHTNESS)
-        .value("MON_CONTRAST", Opt::MON_CONTRAST)
-        .value("MON_SATURATION", Opt::MON_SATURATION)
-        .value("MON_CENTER", Opt::MON_CENTER)
-        .value("MON_HCENTER", Opt::MON_HCENTER)
-        .value("MON_VCENTER", Opt::MON_VCENTER)
-        .value("MON_ZOOM", Opt::MON_ZOOM)
-        .value("MON_HZOOM", Opt::MON_HZOOM)
-        .value("MON_VZOOM", Opt::MON_VZOOM)
-        .value("MON_ENHANCER", Opt::MON_ENHANCER)
-        .value("MON_UPSCALER", Opt::MON_UPSCALER)
-        .value("MON_BLUR", Opt::MON_BLUR)
-        .value("MON_BLUR_RADIUS", Opt::MON_BLUR_RADIUS)
-        .value("MON_BLOOM", Opt::MON_BLOOM)
-        .value("MON_BLOOM_RADIUS", Opt::MON_BLOOM_RADIUS)
-        .value("MON_BLOOM_BRIGHTNESS", Opt::MON_BLOOM_BRIGHTNESS)
-        .value("MON_SCANLINES", Opt::MON_SCANLINES)
-        .value("MON_SCANLINE_BRIGHTNESS", Opt::MON_SCANLINE_BRIGHTNESS)
-        .value("MON_SCANLINE_WEIGHT", Opt::MON_SCANLINE_WEIGHT)
-        .value("MON_DISALIGNMENT", Opt::MON_DISALIGNMENT)
-        .value("MON_DISALIGNMENT_H", Opt::MON_DISALIGNMENT_H)
-        .value("MON_DISALIGNMENT_V", Opt::MON_DISALIGNMENT_V)
-        .value("MON_FLICKER", Opt::MON_FLICKER)
-        .value("MON_FLICKER_WEIGHT", Opt::MON_FLICKER_WEIGHT)
-
-        .value("DMA_DEBUG_ENABLE", Opt::DMA_DEBUG_ENABLE)
-        .value("DMA_DEBUG_MODE", Opt::DMA_DEBUG_MODE)
-        .value("DMA_DEBUG_OPACITY", Opt::DMA_DEBUG_OPACITY)
-        .value("DMA_DEBUG_CHANNEL0", Opt::DMA_DEBUG_CHANNEL0)
-        .value("DMA_DEBUG_CHANNEL1", Opt::DMA_DEBUG_CHANNEL1)
-        .value("DMA_DEBUG_CHANNEL2", Opt::DMA_DEBUG_CHANNEL2)
-        .value("DMA_DEBUG_CHANNEL3", Opt::DMA_DEBUG_CHANNEL3)
-        .value("DMA_DEBUG_CHANNEL4", Opt::DMA_DEBUG_CHANNEL4)
-        .value("DMA_DEBUG_CHANNEL5", Opt::DMA_DEBUG_CHANNEL5)
-        .value("DMA_DEBUG_CHANNEL6", Opt::DMA_DEBUG_CHANNEL6)
-        .value("DMA_DEBUG_CHANNEL7", Opt::DMA_DEBUG_CHANNEL7)
-        .value("DMA_DEBUG_COLOR0", Opt::DMA_DEBUG_COLOR0)
-        .value("DMA_DEBUG_COLOR1", Opt::DMA_DEBUG_COLOR1)
-        .value("DMA_DEBUG_COLOR2", Opt::DMA_DEBUG_COLOR2)
-        .value("DMA_DEBUG_COLOR3", Opt::DMA_DEBUG_COLOR3)
-        .value("DMA_DEBUG_COLOR4", Opt::DMA_DEBUG_COLOR4)
-        .value("DMA_DEBUG_COLOR5", Opt::DMA_DEBUG_COLOR5)
-        .value("DMA_DEBUG_COLOR6", Opt::DMA_DEBUG_COLOR6)
-        .value("DMA_DEBUG_COLOR7", Opt::DMA_DEBUG_COLOR7)
-
-        .value("LA_PROBE0", Opt::LA_PROBE0)
-        .value("LA_PROBE1", Opt::LA_PROBE1)
-        .value("LA_PROBE2", Opt::LA_PROBE2)
-        .value("LA_PROBE3", Opt::LA_PROBE3)
-        .value("LA_ADDR0", Opt::LA_ADDR0)
-        .value("LA_ADDR1", Opt::LA_ADDR1)
-        .value("LA_ADDR2", Opt::LA_ADDR2)
-        .value("LA_ADDR3", Opt::LA_ADDR3)
-
-        .value("VID_WHITE_NOISE", Opt::VID_WHITE_NOISE)
-
-        .value("CPU_REVISION", Opt::CPU_REVISION)
-        .value("CPU_DASM_REVISION", Opt::CPU_DASM_REVISION)
-        .value("CPU_DASM_SYNTAX", Opt::CPU_DASM_SYNTAX)
-        .value("CPU_DASM_NUMBERS", Opt::CPU_DASM_NUMBERS)
-        .value("CPU_OVERCLOCKING", Opt::CPU_OVERCLOCKING)
-        .value("CPU_RESET_VAL", Opt::CPU_RESET_VAL)
-
-        .value("RTC_MODEL", Opt::RTC_MODEL)
-
-        .value("MEM_CHIP_RAM", Opt::MEM_CHIP_RAM)
-        .value("MEM_SLOW_RAM", Opt::MEM_SLOW_RAM)
-        .value("MEM_FAST_RAM", Opt::MEM_FAST_RAM)
-        .value("MEM_EXT_START", Opt::MEM_EXT_START)
-        .value("MEM_SAVE_ROMS", Opt::MEM_SAVE_ROMS)
-        .value("MEM_SLOW_RAM_DELAY", Opt::MEM_SLOW_RAM_DELAY)
-        .value("MEM_SLOW_RAM_MIRROR", Opt::MEM_SLOW_RAM_MIRROR)
-        .value("MEM_BANKMAP", Opt::MEM_BANKMAP)
-        .value("MEM_UNMAPPING_TYPE", Opt::MEM_UNMAPPING_TYPE)
-        .value("MEM_RAM_INIT_PATTERN", Opt::MEM_RAM_INIT_PATTERN)
-
-        .value("DC_SPEED", Opt::DC_SPEED)
-        .value("LOCK_DSKSYNC", Opt::DC_LOCK_DSKSYNC)
-        .value("AUTO_DSKSYNC", Opt::DC_AUTO_DSKSYNC)
-
-        .value("DRIVE_CONNECT", Opt::DRIVE_CONNECT)
-        .value("DRIVE_TYPE", Opt::DRIVE_TYPE)
-        .value("DRIVE_MECHANICS", Opt::DRIVE_MECHANICS)
-        .value("DRIVE_RPM", Opt::DRIVE_RPM)
-        .value("DRIVE_SWAP_DELAY", Opt::DRIVE_SWAP_DELAY)
-        .value("DRIVE_PAN", Opt::DRIVE_PAN)
-        .value("DRIVE_STEP_VOLUME", Opt::DRIVE_STEP_VOLUME)
-        .value("DRIVE_POLL_VOLUME", Opt::DRIVE_POLL_VOLUME)
-        .value("DRIVE_INSERT_VOLUME", Opt::DRIVE_INSERT_VOLUME)
-        .value("DRIVE_EJECT_VOLUME", Opt::DRIVE_EJECT_VOLUME)
-
-        .value("HDC_CONNECT", Opt::HDC_CONNECT)
-
-        .value("HDR_TYPE", Opt::HDR_TYPE)
-        .value("HDR_PAN", Opt::HDR_PAN)
-        .value("HDR_STEP_VOLUME", Opt::HDR_STEP_VOLUME)
-
-        .value("SER_DEVICE", Opt::SER_DEVICE)
-        .value("SER_VERBOSE", Opt::SER_VERBOSE)
-
-        .value("BLITTER_ACCURACY", Opt::BLITTER_ACCURACY)
-
-        .value("CIA_REVISION", Opt::CIA_REVISION)
-        .value("CIA_TODBUG", Opt::CIA_TODBUG)
-        .value("CIA_ECLOCK_SYNCING", Opt::CIA_ECLOCK_SYNCING)
-        .value("CIA_IDLE_SLEEP", Opt::CIA_IDLE_SLEEP)
-
-        .value("KBD_ACCURACY", Opt::KBD_ACCURACY)
-
-        .value("MOUSE_PULLUP_RESISTORS", Opt::MOUSE_PULLUP_RESISTORS)
-        .value("MOUSE_HAKE_DETECTION", Opt::MOUSE_SHAKE_DETECTION)
-        .value("MOUSE_MOUSE_VELOCITY", Opt::MOUSE_VELOCITY)
-
-        .value("JOY_AUTOFIRE", Opt::JOY_AUTOFIRE)
-        .value("JOY_AUTOFIRE_BURSTS", Opt::JOY_AUTOFIRE_BURSTS)
-        .value("JOY_AUTOFIRE_BULLETS", Opt::JOY_AUTOFIRE_BULLETS)
-        .value("JOY_AUTOFIRE_DELAY", Opt::JOY_AUTOFIRE_DELAY)
-
-        .value("AUD_PAN0", Opt::AUD_PAN0)
-        .value("AUD_PAN1", Opt::AUD_PAN1)
-        .value("AUD_PAN2", Opt::AUD_PAN2)
-        .value("AUD_PAN3", Opt::AUD_PAN3)
-        .value("AUD_VOL0", Opt::AUD_VOL0)
-        .value("AUD_VOL1", Opt::AUD_VOL1)
-        .value("AUD_VOL2", Opt::AUD_VOL2)
-        .value("AUD_VOL3", Opt::AUD_VOL3)
-        .value("AUD_VOLL", Opt::AUD_VOLL)
-        .value("AUD_VOLR", Opt::AUD_VOLR)
-        .value("AUD_FILTER_TYPE", Opt::AUD_FILTER_TYPE)
-        .value("AUD_BUFFER_SIZE", Opt::AUD_BUFFER_SIZE)
-        .value("AUD_SAMPLING_METHOD", Opt::AUD_SAMPLING_METHOD)
-        .value("AUD_ASR", Opt::AUD_ASR)
-        .value("AUD_FASTPATH", Opt::AUD_FASTPATH)
-        .value("DIAG_BOARD", Opt::DIAG_BOARD)
-        .value("SRV_PORT", Opt::SRV_PORT)
-        .value("SRV_PROTOCOL", Opt::SRV_PROTOCOL)
-        .value("SRV_AUTORUN", Opt::SRV_AUTORUN)
-        .value("SRV_VERBOSE", Opt::SRV_VERBOSE);
-*/
-
     enum_<RomVendor>("RomVendor")
         .value("COMMODORE", RomVendor::COMMODORE)
         .value("AROS", RomVendor::AROS)
@@ -879,6 +706,7 @@ EMSCRIPTEN_BINDINGS(Keys)
     constant("RELEASE_RIGHT", (int)GamePadAction::RELEASE_RIGHT);
 
     // Msg
+    /*
     constant("MSG_NONE", (int)Msg::NONE);
     constant("MSG_CONFIG", (int)Msg::CONFIG);
     constant("MSG_POWER", (int)Msg::POWER);
@@ -954,7 +782,8 @@ EMSCRIPTEN_BINDINGS(Keys)
     constant("MSG_SRV_SEND", (int)Msg::SRV_SEND);
     constant("MSG_ALARM", (int)Msg::ALARM);
     constant("MSG_RSH_EXPORT", (int)Msg::RSH_EXPORT);
-
+    */
+   
     // Options
     constant("OPT_HOST_REFRESH_RAT", (int)Opt::HOST_REFRESH_RATE);
     constant("OPT_HOST_SAMPLE_RATE", (int)Opt::HOST_SAMPLE_RATE);

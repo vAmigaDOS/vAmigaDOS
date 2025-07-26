@@ -70,18 +70,14 @@
         MsgScriptWakeup,
         MsgVideoFormat,
         MsgOverclocking,
+        MsgGuardUpdated,
         MsgBreakpointReached,
-        MsgBreakpointUpdated,
         MsgWatchpointReached,
-        MsgWatchpointUpdated,
         MsgCatchpointReached,
-        MsgCatchpointUpdated,
         MsgSwTrapReached,
         MsgCpuHalt,
         MsgCopperBpReached,
-        MsgCopperBpUpdated,
         MsgCopperWpReached,
-        MsgCopperWpUpdated,
         MsgViewport,
         MsgMemLayout,
         MsgDriveConnect,
@@ -105,8 +101,7 @@
         MsgShaking,
         MsgSerIn,
         MsgSerOut,
-        MsgAutoSnapshotTaken,
-        MsgUserSnapshotTaken,
+        MsgSnapshotTaken,
         MsgSnapshotRestored,
         MsgRecordingStarted,
         MsgRecordingStopped,
@@ -393,320 +388,310 @@
         $hdWriting = [$hd0.isWriting(), $hd1.isWriting(), $hd2.isWriting(), $hd3.isWriting()];
     }
 
+    function assertDefined<T>(value: T | undefined | null): T {
+        if (value === undefined || value === null) {
+            console.warn("Value is undefined or null");
+            throw new Error("Value is undefined or null");
+        }
+        return value;
+    }
+
     export function processMsg(msg: any)
     {
-        let type = msg.type?.value;
-    
+        let type = msg.type?.valueOf();
+
         switch (type) {
-            case $wasm.MSG_NONE:
+            case $wasm.Msg.NONE.valueOf():
                 $MsgNone++;
                 break;
 
-            case $wasm.MSG_CONFIG:
+            case $wasm.Msg.CONFIG.valueOf():
                 $MsgConfig++;
                 $config = $config;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_POWER:
+            case $wasm.Msg.POWER.valueOf():
                 $MsgPower++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_RUN:
+            case $wasm.Msg.RUN.valueOf():
                 $MsgRun++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_PAUSE:
+            case $wasm.Msg.PAUSE.valueOf():
                 $MsgPause++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_STEP:
+            case $wasm.Msg.STEP.valueOf():
                 $MsgStep++;
                 break;
 
-            case $wasm.MSG_RESET:
+            case $wasm.Msg.RESET.valueOf():
                 $MsgReset++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_SHUTDOWN:
+            case $wasm.Msg.SHUTDOWN.valueOf():
                 $MsgShutdown++;
                 break;
 
-            case $wasm.MSG_ABORT:
+            case $wasm.Msg.ABORT.valueOf():
                 $MsgAbort++;
                 break;
 
-            case $wasm.MSG_WARP:
+            case $wasm.Msg.WARP.valueOf():
                 $MsgWarp++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_TRACK:
+            case $wasm.Msg.TRACK.valueOf():
                 $MsgTrack++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_MUTE:
+            case $wasm.Msg.MUTE.valueOf():
                 $MsgMute++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_POWER_LED_ON:
+            case $wasm.Msg.POWER_LED_ON.valueOf():
                 $MsgPowerLedOn++;
                 break;
 
-            case $wasm.MSG_POWER_LED_DIM:
+            case $wasm.Msg.POWER_LED_DIM.valueOf():
                 $MsgPowerLedDim++;
                 break;
 
-            case $wasm.MSG_POWER_LED_OFF:
+            case $wasm.Msg.POWER_LED_OFF.valueOf():
                 $MsgPowerLedOff++;
                 break;
 
-            case $wasm.MSG_CONSOLE_CLOSE:
+            case $wasm.Msg.RSH_CLOSE.valueOf():
                 $MsgConsoleClose++;
                 break;
 
-            case $wasm.MSG_CONSOLE_UPDATE:
+            case $wasm.Msg.RSH_UPDATE.valueOf():
                 $MsgConsoleUpdate++;
                 break;
 
-            case $wasm.MSG_CONSOLE_DEBUGGER:
+            /*
+            case $wasm.Msg.CONSOLE_DEBUGGER.valueOf():
                 $MsgConsoleDebugger++;
                 break;
-
-            case $wasm.MSG_SCRIPT_DONE:
+           
+            case $wasm.Msg.SCRIPT_DONE.valueOf():
                 $MsgScriptDone++;
                 break;
 
-            case $wasm.MSG_SCRIPT_PAUSE:
+            case $wasm.Msg.SCRIPT_PAUSE.valueOf():
                 $MsgScriptPause++;
                 break;
 
-            case $wasm.MSG_SCRIPT_ABORT:
+            case $wasm.Msg.SCRIPT_ABORT.valueOf():
                 $MsgScriptAbort++;
                 break;
 
-            case $wasm.MSG_SCRIPT_WAKEUP:
+            case $wasm.Msg.SCRIPT_WAKEUP.valueOf():
                 $MsgScriptWakeup++;
                 break;
+            */
 
-            case $wasm.MSG_VIDEO_FORMAT:
+            case $wasm.Msg.VIDEO_FORMAT.valueOf():
                 $MsgVideoFormat++;
                 break;
 
-            case $wasm.MSG_OVERCLOCKING:
+            case $wasm.Msg.OVERCLOCKING.valueOf():
                 $MsgOverclocking++;
                 break;
 
-            case $wasm.MSG_BREAKPOINT_REACHED:
+            case $wasm.Msg.BREAKPOINT_REACHED.valueOf():
                 $MsgBreakpointReached++;
                 break;
 
-            case $wasm.MSG_BREAKPOINT_UPDATED:
-                $MsgBreakpointUpdated++;
+            case $wasm.Msg.GUARD_UPDATED.valueOf():
+                $MsgGuardUpdated++;
                 break;
 
-            case $wasm.MSG_WATCHPOINT_REACHED:
+            case $wasm.Msg.WATCHPOINT_REACHED.valueOf():
                 $MsgWatchpointReached++;
                 break;
 
-            case $wasm.MSG_WATCHPOINT_UPDATED:
-                $MsgWatchpointUpdated++;
-                break;
-
-            case $wasm.MSG_CATCHPOINT_REACHED:
+            case $wasm.Msg.CATCHPOINT_REACHED.valueOf():
                 $MsgCatchpointReached++;
                 break;
 
-            case $wasm.MSG_CATCHPOINT_UPDATED:
-                $MsgCatchpointUpdated++;
-                break;
-
-            case $wasm.MSG_SWTRAP_REACHED:
+            case $wasm.Msg.SWTRAP_REACHED.valueOf():
                 $MsgSwTrapReached++;
                 break;
 
-            case $wasm.MSG_CPU_HALT:
+            case $wasm.Msg.CPU_HALT.valueOf():
                 $MsgCpuHalt++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_COPPERBP_REACHED:
+            case $wasm.Msg.COPPERBP_REACHED.valueOf():
                 $MsgCopperBpReached++;
                 break;
 
-            case $wasm.MSG_COPPERBP_UPDATED:
-                $MsgCopperBpUpdated++;
-                break;
-
-            case $wasm.MSG_COPPERWP_REACHED:
+            case $wasm.Msg.COPPERWP_REACHED.valueOf():
                 $MsgCopperWpReached++;
                 break;
 
-            case $wasm.MSG_COPPERWP_UPDATED:
-                $MsgCopperWpUpdated++;
-                break;
-
-            case $wasm.MSG_VIEWPORT:
+            case $wasm.Msg.VIEWPORT.valueOf():
                 $MsgViewport++;
                 break;
 
-            case $wasm.MSG_MEM_LAYOUT:
+            case $wasm.Msg.MEM_LAYOUT.valueOf():
                 $MsgMemLayout++;
                 break;
 
-            case $wasm.MSG_DRIVE_CONNECT:
+            case $wasm.Msg.DRIVE_CONNECT.valueOf():
                 $MsgDriveConnect++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_DRIVE_SELECT:
+            case $wasm.Msg.DRIVE_SELECT.valueOf():
                 $MsgDriveSelect++;
                 break;
 
-            case $wasm.MSG_DRIVE_READ:
+            case $wasm.Msg.DRIVE_READ.valueOf():
                 $MsgDriveRead++;
                 break;
 
-            case $wasm.MSG_DRIVE_WRITE:
+            case $wasm.Msg.DRIVE_WRITE.valueOf():
                 $MsgDriveWrite++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_DRIVE_LED:
+            case $wasm.Msg.DRIVE_LED.valueOf():
                 $MsgDriveLed++;
                 break;
 
-            case $wasm.MSG_DRIVE_MOTOR:
+            case $wasm.Msg.DRIVE_MOTOR.valueOf():
                 $MsgDriveMotor++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_DRIVE_STEP:
+            case $wasm.Msg.DRIVE_STEP.valueOf():
                 $MsgDriveStep++;
                 updateStateVariables();
                 $audio.playStepSound(msg.drive.volume, msg.drive.pan);
                 break;
 
-            case $wasm.MSG_DRIVE_POLL:
+            case $wasm.Msg.DRIVE_POLL.valueOf():
                 $MsgDrivePoll++;
                 updateStateVariables();
                 $audio.playStepSound(msg.drive.volume, msg.drive.pan);
                 break;
 
-            case $wasm.MSG_DISK_INSERT:
+            case $wasm.Msg.DISK_INSERT.valueOf():
                 $MsgDiskInsert++;
                 updateStateVariables();
                 $audio.playInsertSound(msg.drive.volume, msg.drive.pan);
                 break;
 
-            case $wasm.MSG_DISK_EJECT:
+            case $wasm.Msg.DISK_EJECT.valueOf():
                 $MsgDiskEject++;
                 updateStateVariables();
                 $audio.playEjectSound(msg.drive.volume, msg.drive.pan);
                 break;
 
-            case $wasm.MSG_DISK_PROTECTED:
+            case $wasm.Msg.DISK_PROTECTED.valueOf():
                 $MsgDiskProtected++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_HDC_CONNECT:
+            case $wasm.Msg.HDC_CONNECT.valueOf():
                 $MsgHdcConnect++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_HDC_STATE:
+            case $wasm.Msg.HDC_STATE.valueOf():
                 $MsgHdcState++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_HDR_STEP:
+            case $wasm.Msg.HDR_STEP.valueOf():
                 $MsgHdrStep++;
                 $audio.playClickSound(msg.drive.volume, msg.drive.pan);
                 break;
 
-            case $wasm.MSG_HDR_READ:
+            case $wasm.Msg.HDR_READ.valueOf():
                 $MsgHdrRead++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_HDR_WRITE:
+            case $wasm.Msg.HDR_WRITE.valueOf():
                 $MsgHdrWrite++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_HDR_IDLE:
+            case $wasm.Msg.HDR_IDLE.valueOf():
                 $MsgHdrIdle++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_CTRL_AMIGA_AMIGA:
+            case $wasm.Msg.CTRL_AMIGA_AMIGA.valueOf():
                 $MsgCtrlAmigaAmiga++;
                 break;
 
-            case $wasm.MSG_SHAKING:
+            case $wasm.Msg.SHAKING.valueOf():
                 $MsgShaking++;
                 break;
 
-            case $wasm.MSG_SER_IN:
+            case $wasm.Msg.SER_IN.valueOf():
                 // console.log("SER_IN: ", String.fromCharCode(d1 & 0xFF));
                 $MsgSerIn++;
                 break;
 
-            case $wasm.MSG_SER_OUT:
+            case $wasm.Msg.SER_OUT.valueOf():
                 // console.log("SER_OUT: ", String.fromCharCode(d1 & 0xFF));
                 $MsgSerOut++;
                 break;
 
-            case $wasm.MSG_AUTO_SNAPSHOT_TAKEN:
-                $MsgAutoSnapshotTaken++;
+            case $wasm.Msg.SNAPSHOT_TAKEN.valueOf():
+                $MsgSnapshotTaken++;
                 break;
 
-            case $wasm.MSG_USER_SNAPSHOT_TAKEN:
-                $MsgUserSnapshotTaken++;
-                break;
-
-            case $wasm.MSG_SNAPSHOT_RESTORED:
+            case $wasm.Msg.SNAPSHOT_RESTORED.valueOf():
                 $MsgSnapshotRestored++;
                 updateStateVariables();
                 break;
 
-            case $wasm.MSG_RECORDING_STARTED:
+            case $wasm.Msg.RECORDING_STARTED.valueOf():
                 $MsgRecordingStarted++;
                 break;
 
-            case $wasm.MSG_RECORDING_STOPPED:
+            case $wasm.Msg.RECORDING_STOPPED.valueOf():
                 $MsgRecordingStopped++;
                 break;
 
-            case $wasm.MSG_RECORDING_ABORTED:
+            case $wasm.Msg.RECORDING_ABORTED.valueOf():
                 $MsgRecordingAborted++;
                 break;
 
-            case $wasm.MSG_DMA_DEBUG:
+            case $wasm.Msg.DMA_DEBUG.valueOf():
                 $MsgDmaDebug++;
                 $debugDma = msg.value;
                 break;
 
-            case $wasm.MSG_SRV_STATE:
+            case $wasm.Msg.SRV_STATE.valueOf():
                 $MsgSrvState++;
                 break;
 
-            case $wasm.MSG_SRV_RECEIVE:
+            case $wasm.Msg.SRV_RECEIVE.valueOf():
                 $MsgSrvReceive++;
                 break;
 
-            case $wasm.MSG_SRV_SEND:
+            case $wasm.Msg.SRV_SEND.valueOf():
                 $MsgSrvSend++;
                 break;
 
-            case $wasm.MSG_ALARM:
+            case $wasm.Msg.ALARM.valueOf():
                 $MsgAlarm++;
                 console.log("Alarm received: ", msg.value);
 
@@ -720,7 +705,7 @@
                 }
                 break;
 
-            case $wasm.MSG_RSH_EXPORT:
+            case $wasm.Msg.RSH_EXPORT.valueOf():
                 $MsgRshExport++;
             default:
                 break;
