@@ -2,14 +2,7 @@
 	import { Layer } from '$lib/types';
 	import SidebarButton from '$lib/Sidebar/SidebarButton.svelte';
 	import { fade } from 'svelte/transition';
-	import {
-		layer,
-		layout,
-		port1,
-		port2,
-		running,
-		showSidebar
-	} from '$lib/stores';
+	import { layer, showSidebar } from '$lib/stores';
 
 	let {
 		action = () => {}
@@ -24,52 +17,12 @@
 		sel = sender == sel ? '' : sender;
 		action(sender, state);
 	}
-	const portIcons = [
-		'icons/device-none.png',
-		'icons/device-mouse.png',
-		'icons/device-keyset-1.png',
-		'icons/device-keyset-2.png',
-		'icons/device-usb-1.png',
-		'icons/device-usb-2.png'
-	];
-	let powerIcon = 'icons/powerIcon.png';
-	let resetIcon = 'icons/resetIcon.png';
-	let settingsIcon = 'icons/settingsIcon.png';
 	let diskIcon = 'icons/disk.png';
 	let shellIcon = 'icons/retroShellIcon.png';
-	let takeSnapshotIcon = 'icons/takeSnapshotIcon.png';
-	let monitorIcon = 'icons/monitorIcon.png';
-	let pauseIcon = $derived($running ? 'icons/pauseIcon.png' : 'icons/runIcon.png');
-	let port1Icon = $derived(portIcons[$port1]);
-	let port2Icon = $derived(portIcons[$port2]);
-	let layoutIcon = $derived(
-		$layout == 'full'
-			? 'icons/layoutFullIcon.png'
-			: $layout == 'aspect'
-				? 'icons/layoutAspectIcon.png'
-				: 'icons/layoutFitIcon.png'
-	);
-	const port1Items = [
-		{ id: 'empty1', icon: portIcons[0] },
-		{ id: 'mouse1', icon: portIcons[1] },
-		{ id: 'keyset11', icon: portIcons[2] },
-		{ id: 'keyset12', icon: portIcons[3] },
-		{ id: 'gamepad11', icon: portIcons[4] }
-	];
-	const port2Items = [
-		{ id: 'empty2', icon: portIcons[0] },
-		{ id: 'mouse2', icon: portIcons[1] },
-		{ id: 'keyset21', icon: portIcons[2] },
-		{ id: 'keyset22', icon: portIcons[3] },
-		{ id: 'gamepad21', icon: portIcons[4] }
-	];
-	const layoutItems = [
-		{ id: 'aspect', icon: 'icons/layoutAspectIcon.png' },
-		{ id: 'fit', icon: 'icons/layoutFitIcon.png' },
-		{ id: 'full', icon: 'icons/layoutFullIcon.png' }
-	];
 
-	const shellTooltip = $derived($layer === Layer.shell ? 'Close the command shell' : 'Open the command shell')
+	const shellTooltip = $derived(
+		$layer === Layer.shell ? 'Close the command shell' : 'Open the command shell'
+	);
 </script>
 
 {#if $showSidebar}
@@ -80,7 +33,7 @@
 					{select}
 					item={{ id: 'export', icon: diskIcon }}
 					active={false}
-					tooltip='Export the file system'
+					tooltip="Export the file system"
 				/>
 				<SidebarButton
 					{select}
