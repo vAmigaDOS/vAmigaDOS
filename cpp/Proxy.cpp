@@ -596,6 +596,14 @@ EMSCRIPTEN_BINDINGS(PaulaProxy)
 // RetroShell proxy
 //
 
+void 
+RetroShellProxy::remove_all(const string &path)
+{ 
+    TRY 
+    std::filesystem::remove_all(path);    
+    CATCH
+}
+
 EMSCRIPTEN_BINDINGS(RetroShellProxy)
 {
     class_<RetroShellProxy>("RetroShellProxy")
@@ -618,7 +626,9 @@ EMSCRIPTEN_BINDINGS(RetroShellProxy)
         .function("type", &RetroShellProxy::type)
         .function("importDf", &RetroShellProxy::importDf)
         .function("importHd", &RetroShellProxy::importHd)
-        .function("exportBlocks", &RetroShellProxy::exportBlocks);
+        .function("importFiles", &RetroShellProxy::importFiles)
+        .function("exportBlocks", &RetroShellProxy::exportBlocks)
+        .function("remove_all", &RetroShellProxy::remove_all);
 }
 
 EMSCRIPTEN_BINDINGS(Constants)

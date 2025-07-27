@@ -729,6 +729,12 @@ MutableFileSystem::importVolume(const u8 *src, isize size)
 }
 
 void
+MutableFileSystem::import(const fs::path &path, bool recursive, bool contents)
+{
+    import(pwd(), path, recursive, contents);
+}
+
+void
 MutableFileSystem::import(FSBlock &top, const fs::path &path, bool recursive, bool contents)
 {
     fs::directory_entry dir;

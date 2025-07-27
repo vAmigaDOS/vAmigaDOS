@@ -123,6 +123,7 @@
 		}
 	}
 
+	/*
 	async function saveToHost(defaultName: string, accept: string[], data: Uint8Array | string) {
 		const handle = await window.showSaveFilePicker({
 			suggestedName: defaultName,
@@ -138,41 +139,47 @@
 		await writable.write(data); // Uint8Array or string
 		await writable.close();
 	}
-
-	/*
-	async function saveExportDirectoryToHost() {
-		const dirHandle = await window.showDirectoryPicker();
-
-		await copyEmscriptenDirToHandle('/export', dirHandle);
-	}
-
-	async function copyEmscriptenDirToHandle(
-		virtualPath: string,
-		dirHandle: FileSystemDirectoryHandle
-	) {
-		const entries = $wasm.FS.readdir(virtualPath);
-
-		for (const entry of entries) {
-			if (entry === '.' || entry === '..') continue;
-
-			const fullPath = `${virtualPath}/${entry}`;
-			const stat = $wasm.FS.stat(fullPath);
-
-			if ($wasm.FS.isDir(stat.mode)) {
-				// Create subdirectory on the host
-				const subDirHandle = await dirHandle.getDirectoryHandle(entry, { create: true });
-				await copyEmscriptenDirToHandle(fullPath, subDirHandle); // recurse
-			} else {
-				// It's a file
-				const fileHandle = await dirHandle.getFileHandle(entry, { create: true });
-				const writable = await fileHandle.createWritable();
-				const data = $wasm.FS.readFile(fullPath); // returns Uint8Array
-				await writable.write(data);
-				await writable.close();
-			}
-		}
-	}
 	*/
+	async function saveToHost(defaultName: string, accept: string[], data: Uint8Array | string) {
+		const blob =
+			typeof data === 'string' ? new Blob([data], { type: 'text/plain' }) : new Blob([data]);
+
+		// Check if showSaveFilePicker is available
+		/*
+		if ('showSaveFilePicker' in window) {
+			try {
+				const handle = await (window as any).showSaveFilePicker({
+					suggestedName: defaultName,
+					types: [
+						{
+							description: 'Binary File',
+							accept: { 'application/octet-stream': accept }
+						}
+					]
+				});
+				const writable = await handle.createWritable();
+				await writable.write(blob);
+				await writable.close();
+			} catch (err) {
+				console.warn(
+					'showSaveFilePicker failed or was cancelled, falling back to download link.',
+					err
+				);
+				// Fall through to fallback
+			}
+			return;
+		}
+		*/
+		
+		// Fallback for Safari, Firefox, etc.
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = defaultName;
+		document.body.appendChild(a); // Required for Firefox
+		a.click();
+		a.remove();
+		URL.revokeObjectURL(a.href);
+	}
 
 	async function downloadDirectory(wasmName: string, hostName: string) {
 		const zip = new JSZip();

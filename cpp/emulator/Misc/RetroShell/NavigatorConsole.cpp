@@ -309,6 +309,12 @@ NavigatorConsole::importHd(isize n, isize part)
 }
 
 void
+NavigatorConsole::import(const fs::path &path, bool recursive, bool contents)
+{
+    fs.import(path, recursive, contents);
+}
+
+void
 NavigatorConsole::exportBlocks(fs::path path)
 {
     fs.exportBlocks(path);
@@ -681,7 +687,9 @@ NavigatorConsole::initCommands(RSCommand &root)
                     } else {
 
                         fs.exportBlocks("/export");
-                        msgQueue.setPayload( { "/export", fs.getTraits().adf() ? ".adf" : ".hdf" } );
+                        auto name = fs.getName().cpp_str();
+                        name += fs.getTraits().adf() ? ".adf" : ".hdf";
+                        msgQueue.setPayload( { "/export", name } );
                     }
                     
                     msgQueue.put(Msg::RSH_EXPORT);
