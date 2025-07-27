@@ -139,6 +139,7 @@
 		await writable.close();
 	}
 
+	/*
 	async function saveExportDirectoryToHost() {
 		const dirHandle = await window.showDirectoryPicker();
 
@@ -171,6 +172,7 @@
 			}
 		}
 	}
+	*/
 
 	async function downloadDirectory(wasmName: string, hostName: string) {
 		const zip = new JSZip();
@@ -232,14 +234,23 @@
 			const hostName = $amiga.getPayload(1);
 			// console.log('Exporting... ', wasmName, hostName);
 
-			const stat = $wasm.FS.stat(wasmName);
-
-			if ($wasm.FS.isDir(stat.mode)) {
-				console.log('Exporting directory ${wasmName} to ${hostName}');
-				downloadDirectory(wasmName, hostName);
-			} else if ($wasm.FS.isFile(stat.mode)) {
-				console.log('Exporting file ${wasmName} to ${hostName}');
-				downloadFile(wasmName, hostName);
+			if (hostName == '.adf') {
+				console.log('Exporting ADF');
+				const data = $wasm.FS.readFile(wasmName);
+				saveToHost('volume.adf', ['.adf'], data);
+			} else if (hostName == '.hdf') {
+				console.log('Exporting HDF');
+				const data = $wasm.FS.readFile(wasmName);
+				saveToHost('volume.hdf', ['.hdf'], data);
+			} else {
+				const stat = $wasm.FS.stat(wasmName);
+				if ($wasm.FS.isDir(stat.mode)) {
+					console.log('Exporting directory ${wasmName} to ${hostName}');
+					downloadDirectory(wasmName, hostName);
+				} else if ($wasm.FS.isFile(stat.mode)) {
+					console.log('Exporting file ${wasmName} to ${hostName}');
+					downloadFile(wasmName, hostName);
+				}
 			}
 		} catch (e) {
 			console.error('Export failed: ', e);
