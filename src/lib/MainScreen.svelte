@@ -39,33 +39,35 @@
 		if (event.dataTransfer.items.length !== 1) return;
 		let item = event.dataTransfer.items[0];
 
-		console.log('kind: ', item.kind);
-
+		// Get the file system entry
 		const entry = item.webkitGetAsEntry?.();
 		console.log('entry: ', entry);
+
 		if (entry && entry.isDirectory) {
-				console.log('User dropped in directory ${entry.name}');
-				console.log('Clearing import directory...');
-				$retroShell.remove_all('/import');
-				$wasm.FS.mkdir('/import');
-				console.log('Importing files...');
-				await readDirectoryEntry(entry, '/import/' + entry.name);
-				console.log('FS contents:', $wasm.FS.readdir('/import/' + entry.name));
-				$retroShell.importFiles('/import', true, true);
-				console.log('Done');
+			await handleDraggedDirectory(item, entry);
 			return;
 		} else if (entry && entry.isFile) {
-			console.log('User dropped a file');
+			await handleDraggedFile(item, entry);
 		} else {
 			console.log('Unknown or unsupported item');
 		}
+	}
 
-		// Only proceed if the user has dragged in a file
-		if (item.kind !== 'file') return;
+	async function handleDraggedDirectory(item: DataTransferItem, entry: FileSystemEntry) {
+		console.log('User dropped in directory ${entry.name}');
+		$retroShell.remove_all('/import');
+		$wasm.FS.mkdir('/import');
+		console.log('Importing files...');
+		await readDirectoryEntry(entry, '/import/' + entry.name);
+		console.log('FS contents:', $wasm.FS.readdir('/import/' + entry.name));
+		$retroShell.importFiles('/import', true, true);
+	}
+
+	async function handleDraggedFile(item: DataTransferItem, entry: FileSystemEntry) {
+		console.log('User dropped in file ${entry.name}');
 		const file = item.getAsFile();
 		if (!file) return;
 
-		// Get the file name here
 		const filename = file.name;
 		console.log('Dropped file:', filename);
 
@@ -73,10 +75,6 @@
 		let blob = await file.arrayBuffer();
 		let uint8View = new Uint8Array(blob);
 		console.log('Got file data');
-
-		// Assume file is a File object
-		// const buffer = await file.arrayBuffer();
-		// const uint8Array = new Uint8Array(buffer);
 
 		// Write into the WASM virtual filesystem
 		let tmpName = filename;
@@ -87,21 +85,21 @@
 
 		// Check the file type
 		switch ($amiga.getFileType(tmpName)) {
-			case $wasm.FILETYPE_ROM:
-				await handleDraggedRom(uint8View);
-				return;
 			case $wasm.FILETYPE_ADF:
 			case $wasm.FILETYPE_EADF:
 			case $wasm.FILETYPE_DMS:
 			case $wasm.FILETYPE_EXE:
 				handleDraggedDisk(uint8View);
-				return;
+				break;
 			case $wasm.FILETYPE_HDF:
 				handleDraggedHardDrive(uint8View);
-				return;
+				break;
 			default:
-				console.warn('Unsupported file format');
-				return;
+				$retroShell.remove_all('/import');
+				$wasm.FS.mkdir('/import');
+				await readDirectoryEntry(entry, '/import/' + entry.name);
+				$retroShell.importFiles('/import', true, true);
+				break;
 		}
 	}
 

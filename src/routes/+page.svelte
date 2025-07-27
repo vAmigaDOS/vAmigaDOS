@@ -170,7 +170,7 @@
 			return;
 		}
 		*/
-		
+
 		// Fallback for Safari, Firefox, etc.
 		const a = document.createElement('a');
 		a.href = URL.createObjectURL(blob);
@@ -274,27 +274,6 @@
 
 	function action(sender: string, state: boolean) {
 		switch (sender) {
-			case 'export':
-				// DEPRECATED
-				console.log('export');
-				try {
-					console.log('Exporting file system...');
-					$retroShell.exportBlocks('blob');
-					console.log('Reading data...');
-					console.log($wasm.FS.readdir('/'));
-					console.log($wasm.FS.analyzePath('/blob'));
-					const data = $wasm.FS.readFile('/blob');
-					console.log('data: ', data);
-					console.log('Save to host file system...');
-					saveToHostFileSystem('', data);
-					console.log(`File system successfully exported`);
-				} catch (err) {
-					console.error('Export failed!');
-					console.error('Error object:', err);
-					console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
-					console.log('FS contents:', $wasm.FS.readdir('/'));
-				}
-				break;
 			case 'shell':
 				$layer = $layer == Layer.shell ? Layer.none : Layer.shell;
 				$showSidebar = false;

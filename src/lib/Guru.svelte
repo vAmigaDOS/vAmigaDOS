@@ -35,7 +35,7 @@
 			class="font-azeret flex h-24 w-full flex-col justify-center border-none text-center text-lg"
 		>
 			<p class="p-1">
-				Emulator failure. Uncaught exception {$errno} ({$enums.ErrorCodeKey($errno)})
+				Operation failed with exception {$errno} ({$enums.ErrorCodeKey($errno)})
 			</p>
 			<p class="p-1">{$what}</p>
 		</div>
