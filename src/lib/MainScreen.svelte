@@ -42,14 +42,28 @@
 		// Get the file system entry
 		const entry = item.webkitGetAsEntry?.();
 		console.log('entry: ', entry);
+		if (!entry) return;
 
-		if (entry && entry.isDirectory) {
+		if (entry.isDirectory) {
 			await handleDraggedDirectory(item, entry);
 			return;
-		} else if (entry && entry.isFile) {
-			await handleDraggedFile(item, entry);
-		} else {
-			console.log('Unknown or unsupported item');
+		} 
+
+		switch ($amiga.getFileType(entry.name)) {
+
+			case $wasm.FILETYPE_ADF:
+			case $wasm.FILETYPE_EADF:
+			case $wasm.FILETYPE_DMS:
+			case $wasm.FILETYPE_EXE:
+				await handleDraggedDisk(item, entry);
+				break;
+
+			case $wasm.FILETYPE_HDF:
+				await handleDraggedHardDrive(item, entry);
+				break;
+
+			default:
+				await handleDraggedFile(item, entry);
 		}
 	}
 
@@ -68,31 +82,30 @@
 		const file = item.getAsFile();
 		if (!file) return;
 
-		const filename = file.name;
-		console.log('Dropped file:', filename);
-
 		// Get the file data
-		let blob = await file.arrayBuffer();
-		let uint8View = new Uint8Array(blob);
-		console.log('Got file data');
+		console.log('Getting file data...');
+		// let blob = await file.arrayBuffer();
+		// let uint8View = new Uint8Array(blob);
 
 		// Write into the WASM virtual filesystem
-		let tmpName = filename;
-		console.log('tmp name:', tmpName);
 		console.log('WASM.FS', $wasm.FS);
-		$wasm.FS.writeFile(tmpName, uint8View);
+		// $wasm.FS.writeFile(file.name, uint8View);
 		console.log('Checking type...');
 
 		// Check the file type
-		switch ($amiga.getFileType(tmpName)) {
+		switch ($amiga.getFileType(file.name)) {
 			case $wasm.FILETYPE_ADF:
 			case $wasm.FILETYPE_EADF:
 			case $wasm.FILETYPE_DMS:
 			case $wasm.FILETYPE_EXE:
-				handleDraggedDisk(uint8View);
+				let blob1 = await file.arrayBuffer();
+				let uint8View1 = new Uint8Array(blob1);
+				handleDraggedDisk(uint8View1);
 				break;
 			case $wasm.FILETYPE_HDF:
-				handleDraggedHardDrive(uint8View);
+				let blob2 = await file.arrayBuffer();
+				let uint8View2 = new Uint8Array(blob2);
+				handleDraggedHardDrive(uint8View2);
 				break;
 			default:
 				$retroShell.remove_all('/import');
@@ -100,6 +113,30 @@
 				await readDirectoryEntry(entry, '/import/' + entry.name);
 				$retroShell.importFiles('/import', true, true);
 				break;
+		}
+	}
+
+	async function handleDraggedDisk(item: DataTransferItem, entry: FileSystemEntry) {
+		const file = item.getAsFile();
+		if (file) {
+			let buffer = await file.arrayBuffer();
+			let uint8View = new Uint8Array(buffer);
+			$amiga.insertDisk(uint8View, 0);
+			$retroShell.importDf(0);
+			$retroShell.type('info\n');
+			$layer = Layer.shell;
+		}
+	}
+
+	async function handleDraggedHardDrive(item: DataTransferItem, entry: FileSystemEntry) {
+		const file = item.getAsFile();
+		if (file) {
+			let buffer = await file.arrayBuffer();
+			let uint8View = new Uint8Array(buffer);
+			$amiga.attachHardDrive(uint8View, 0);
+			$retroShell.importHd(0, 0);
+			$retroShell.type('info\n');
+			$layer = Layer.shell;
 		}
 	}
 
@@ -153,34 +190,6 @@
 
 		$wasm.FS.writeFile(targetPath, data);
 		console.log(`Saved ${targetPath} (${data.length} bytes)`);
-	}
-
-	async function handleDraggedRom(blob: Uint8Array) {
-		$proxy.addRom(blob);
-	}
-
-	function handleDraggedDisk(blob: Uint8Array) {
-		$amiga.insertDisk(blob, 0);
-		$retroShell.importDf(0);
-		$retroShell.type('info\n');
-		$layer = Layer.shell;
-		/*
-		$dragItem = blob;
-		$dragType = 'floppy';
-		$layer = Layer.dropzone;
-		*/
-	}
-
-	function handleDraggedHardDrive(blob: Uint8Array) {
-		$amiga.attachHardDrive(blob, 0);
-		$retroShell.importHd(0, 0);
-		$retroShell.type('info\n');
-		$layer = Layer.shell;
-		/*
-		$dragItem = blob;
-		$dragType = 'harddrive';
-		$layer = Layer.dropzone;
-		*/
 	}
 </script>
 
