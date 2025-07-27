@@ -672,9 +672,12 @@ NavigatorConsole::initCommands(RSCommand &root)
 
                 if constexpr (vAmigaDOS) {
 
+                    contents = true;
+                    auto name = item.cppName();
+                    if (name.empty()) name = fs.getName().cpp_str();
                     std::filesystem::remove_all("/export");
                     fs.exportFiles(item, "/export", recursive, contents);
-                    msgQueue.setPayload( { "/export", item.cppName() } );
+                    msgQueue.setPayload( { "/export", name } );
                     msgQueue.put(Msg::RSH_EXPORT);
 
                 } else {

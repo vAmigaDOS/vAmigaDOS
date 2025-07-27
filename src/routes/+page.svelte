@@ -172,7 +172,7 @@
 		}
 	}
 
-	async function zipAndDownloadExportDir(wasmName: string, hostName: string) {
+	async function downloadDirectory(wasmName: string, hostName: string) {
 		const zip = new JSZip();
 
 		addEmscriptenDirToZip(zip.folder(hostName)!, wasmName);
@@ -192,14 +192,13 @@
 			const data = $wasm.FS.readFile(wasmName);
 
 			const blob = new Blob([data]);
-			const url = URL.createObjectURL(blob);
 
+			// Trigger download
 			const a = document.createElement('a');
-			a.href = url;
+			a.href = URL.createObjectURL(blob);
 			a.download = hostName;
 			a.click();
-
-			URL.revokeObjectURL(url);
+			URL.revokeObjectURL(a.href);
 		} catch (e) {
 			console.error(`Failed to download ${wasmName}:`, e);
 		}
@@ -231,48 +230,22 @@
 		try {
 			const wasmName = $amiga.getPayload(0);
 			const hostName = $amiga.getPayload(1);
-			console.log('Exporting... ', wasmName, hostName);
+			// console.log('Exporting... ', wasmName, hostName);
 
 			const stat = $wasm.FS.stat(wasmName);
 
 			if ($wasm.FS.isDir(stat.mode)) {
-				console.log(wasmName, ' is a directory');
-				zipAndDownloadExportDir(wasmName, hostName);
+				console.log('Exporting directory ${wasmName} to ${hostName}');
+				downloadDirectory(wasmName, hostName);
 			} else if ($wasm.FS.isFile(stat.mode)) {
-				console.log(wasmName, ' is a file');
+				console.log('Exporting file ${wasmName} to ${hostName}');
 				downloadFile(wasmName, hostName);
 			}
-
-			/*
-			const info = $wasm.FS.analyzePath(wasmName);
-
-			if (!info.exists) {
-				console.warn(wasmName, ' does not exist');
-				console.log($wasm.FS.readdir('/'));
-			} else if (info.isDir) {
-				console.log(wasmName, ' is a directory');
-				zipAndDownloadExportDir(wasmName, hostName);
-			} else if (info.isFile) {
-				console.log(wasmName, ' is a file');
-			} else {
-				console.log('Huh?', info);
-			}
-			*/
-
-			// Read file from the browser file system
-			// const data = $wasm.FS.readFile(wasmName);
-			// console.log('Reading export data... ');
-			// console.log($wasm.FS.readdir('/'));
-			// console.log($wasm.FS.analyzePath('/export'));
-
-			// Save file to the host file system
-			// saveToHost(proposedName, ['.bin'], data);
-			// saveExportDirectoryToHost();
-		} catch (err) {
-			console.error('Export failed: ', err);
-			if (err instanceof Error) {
-				console.error('Name:', err.name);
-				console.error('Message:', err.message);
+		} catch (e) {
+			console.error('Export failed: ', e);
+			if (e instanceof Error) {
+				console.error('Name:', e.name);
+				console.error('Message:', e.message);
 			}
 			// console.error('Stack:', err.stack);
 			console.log('FS.analyzePath:', $wasm.FS.analyzePath('/export'));
