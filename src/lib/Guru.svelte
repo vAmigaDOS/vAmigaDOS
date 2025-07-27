@@ -21,14 +21,15 @@
 		$errno = 0;
 		active = false;
 		clearInterval(intervalId);
-		intervalId = undefined
+		intervalId = undefined;
 	}
 </script>
 
 {#if active}
-	<div
+	<button
+		type="button"
 		{onclick}
-		class="relative flex justify-center border-[10px] bg-black text-red-600 {borderColor}"
+		class="relative w-full flex justify-center border-[10px] bg-black text-red-600 {borderColor}"
 	>
 		<div
 			class="font-azeret flex h-24 w-full flex-col justify-center border-none text-center text-lg"
@@ -38,5 +39,5 @@
 			</p>
 			<p class="p-1">{$what}</p>
 		</div>
-	</div>
+	</button>
 {/if}
