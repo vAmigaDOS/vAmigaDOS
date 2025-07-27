@@ -1,22 +1,14 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
-
+	import JSZip from 'jszip';
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { db } from '$lib/Db/db';
 	import { liveQuery } from 'dexie';
 	import { Layer } from '$lib/types';
-	import {
-		initialized,
-		amiga,
-		dfConnected,
-		kickstarts,
-		MsgConsoleDebugger,
-		retroShell
-	} from '$lib/stores';
+	import { initialized, amiga, kickstarts, retroShell } from '$lib/stores';
 	import { MsgRshExport } from '$lib/stores';
 	import { wasm, proxy, audio, config, gamepadManager } from '$lib/stores';
-	import { layer, poweredOn, what, errno } from '$lib/stores';
+	import { layer, what, errno } from '$lib/stores';
 	import { layout, showSidebar } from '$lib/stores';
 	import { canvasWidth, canvasHeight, aspectWidth, aspectHeight } from '$lib/stores';
 	import { port1, port2 } from '$lib/stores';
@@ -147,26 +139,89 @@
 		await writable.close();
 	}
 
-	// DEPRECATED
-	async function saveToHostFileSystem(defaultFilename: string, data: Uint8Array | string) {
-		const handle = await window.showSaveFilePicker({
-			suggestedName: defaultFilename,
-			types: [
-				{
-					description: 'Binary File',
-					accept: { 'application/octet-stream': ['.adf', '.hdf'] }
-				}
-			]
-		});
+	async function saveExportDirectoryToHost() {
+		const dirHandle = await window.showDirectoryPicker();
 
-		const writable = await handle.createWritable();
-		await writable.write(data); // Uint8Array or string
-		await writable.close();
+		await copyEmscriptenDirToHandle('/export', dirHandle);
 	}
 
-	function myJsFunction(a: string, b: string) {
-		console.log('myJsFunction called with:', a, b);
-		// Your logic here
+	async function copyEmscriptenDirToHandle(
+		virtualPath: string,
+		dirHandle: FileSystemDirectoryHandle
+	) {
+		const entries = $wasm.FS.readdir(virtualPath);
+
+		for (const entry of entries) {
+			if (entry === '.' || entry === '..') continue;
+
+			const fullPath = `${virtualPath}/${entry}`;
+			const stat = $wasm.FS.stat(fullPath);
+
+			if ($wasm.FS.isDir(stat.mode)) {
+				// Create subdirectory on the host
+				const subDirHandle = await dirHandle.getDirectoryHandle(entry, { create: true });
+				await copyEmscriptenDirToHandle(fullPath, subDirHandle); // recurse
+			} else {
+				// It's a file
+				const fileHandle = await dirHandle.getFileHandle(entry, { create: true });
+				const writable = await fileHandle.createWritable();
+				const data = $wasm.FS.readFile(fullPath); // returns Uint8Array
+				await writable.write(data);
+				await writable.close();
+			}
+		}
+	}
+
+	async function zipAndDownloadExportDir(wasmName: string, hostName: string) {
+		const zip = new JSZip();
+
+		addEmscriptenDirToZip(zip.folder(hostName)!, wasmName);
+
+		const blob = await zip.generateAsync({ type: 'blob' });
+
+		// Trigger download
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = hostName + '.zip';
+		a.click();
+		URL.revokeObjectURL(a.href);
+	}
+
+	function downloadFile(wasmName: string, hostName: string) {
+		try {
+			const data = $wasm.FS.readFile(wasmName);
+
+			const blob = new Blob([data]);
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = hostName;
+			a.click();
+
+			URL.revokeObjectURL(url);
+		} catch (e) {
+			console.error(`Failed to download ${wasmName}:`, e);
+		}
+	}
+
+	function addEmscriptenDirToZip(zipFolder: JSZip, virtualPath: string) {
+		const entries = $wasm.FS.readdir(virtualPath);
+
+		for (const entry of entries) {
+			if (entry === '.' || entry === '..') continue;
+
+			const fullPath = `${virtualPath}/${entry}`;
+			const stat = $wasm.FS.stat(fullPath);
+
+			if ($wasm.FS.isDir(stat.mode)) {
+				const subZip = zipFolder.folder(entry)!;
+				addEmscriptenDirToZip(subZip, fullPath);
+			} else {
+				const data = $wasm.FS.readFile(fullPath); // Uint8Array
+				zipFolder.file(entry, data);
+			}
+		}
 	}
 
 	$effect(() => {
@@ -175,25 +230,61 @@
 
 		try {
 			const wasmName = $amiga.getPayload(0);
-			const proposedName = $amiga.getPayload(1);
+			const hostName = $amiga.getPayload(1);
+			console.log('Exporting... ', wasmName, hostName);
 
-			console.log('Export payload: ', wasmName, proposedName);
+			const stat = $wasm.FS.stat(wasmName);
+
+			if ($wasm.FS.isDir(stat.mode)) {
+				console.log(wasmName, ' is a directory');
+				zipAndDownloadExportDir(wasmName, hostName);
+			} else if ($wasm.FS.isFile(stat.mode)) {
+				console.log(wasmName, ' is a file');
+				downloadFile(wasmName, hostName);
+			}
+
+			/*
+			const info = $wasm.FS.analyzePath(wasmName);
+
+			if (!info.exists) {
+				console.warn(wasmName, ' does not exist');
+				console.log($wasm.FS.readdir('/'));
+			} else if (info.isDir) {
+				console.log(wasmName, ' is a directory');
+				zipAndDownloadExportDir(wasmName, hostName);
+			} else if (info.isFile) {
+				console.log(wasmName, ' is a file');
+			} else {
+				console.log('Huh?', info);
+			}
+			*/
 
 			// Read file from the browser file system
-			const data = $wasm.FS.readFile(wasmName);
+			// const data = $wasm.FS.readFile(wasmName);
+			// console.log('Reading export data... ');
+			// console.log($wasm.FS.readdir('/'));
+			// console.log($wasm.FS.analyzePath('/export'));
 
 			// Save file to the host file system
-			saveToHost(proposedName, ['.bin'], data);
+			// saveToHost(proposedName, ['.bin'], data);
+			// saveExportDirectoryToHost();
 		} catch (err) {
 			console.error('Export failed: ', err);
-			console.log('FS.analyzePath:', $wasm.FS.analyzePath('/blob'));
-			console.log('FS.readdir:', $wasm.FS.readdir('/'));
+			if (err instanceof Error) {
+				console.error('Name:', err.name);
+				console.error('Message:', err.message);
+			}
+			// console.error('Stack:', err.stack);
+			console.log('FS.analyzePath:', $wasm.FS.analyzePath('/export'));
+			console.log('FS.readdir /:', $wasm.FS.readdir('/'));
+			console.log('FS.readdir /export:', $wasm.FS.readdir('/export'));
 		}
 	});
 
 	function action(sender: string, state: boolean) {
 		switch (sender) {
 			case 'export':
+				// DEPRECATED
 				console.log('export');
 				try {
 					console.log('Exporting file system...');

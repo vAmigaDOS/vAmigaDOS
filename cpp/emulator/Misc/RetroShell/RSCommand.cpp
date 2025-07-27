@@ -78,6 +78,9 @@ RSCommand::add(const RSCommandDescriptor &descriptor)
     assert(!descriptor.tokens.empty());
     assert(!descriptor.chelp.empty() || !descriptor.ghelp.empty());
 
+    // Only register enabled commands
+    if (descriptor.flags & rs::disabled) return;
+
     // Cleanse the token list (convert { "aaa bbb" } into { "aaa", "bbb" }
     auto tokens = util::split(descriptor.tokens, ' ');
 
@@ -99,6 +102,10 @@ RSCommand::add(const RSCommandDescriptor &descriptor)
     cmd.args = descriptor.args;
     cmd.callback = descriptor.func;
     cmd.payload = descriptor.payload;
+
+    // Remove all disabled arguments
+    cmd.args.erase(std::remove_if(cmd.args.begin(), cmd.args.end(), [](const RSArgumentDescriptor& arg) {
+        return arg.flags & rs::disabled; }), cmd.args.end());
 
     // Reset the group
     if (cmd.isVisible()) currentGroup = "";
