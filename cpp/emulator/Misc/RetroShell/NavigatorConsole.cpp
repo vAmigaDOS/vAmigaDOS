@@ -572,7 +572,7 @@ NavigatorConsole::initCommands(RSCommand &root)
         .tokens = { "import" },
         .ghelp  = { "Import a file system" },
         .chelp  = { "Import a file or a folder from the host file system" },
-        .flags  = vAmigaDOS ? rs::disabled : 0,
+        .flags  = vAmigaDOS ? rs::hidden : 0,
         .args   = {
             { .name = { "path", "Host file system directory" } },
         },
@@ -1117,6 +1117,9 @@ NavigatorConsole::initCommands(RSCommand &root)
             Tokens missing;
             auto &path = matchPath(args.at("name"), missing);
 
+            if (missing.empty()) {
+                throw(AppError(Fault::FS_EXISTS, args.at("name")));
+            }
             auto *p = &path;
             for (auto &it: missing) {
                 if (p) p = &fs.createDir(*p, FSName(it));

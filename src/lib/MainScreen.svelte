@@ -47,10 +47,9 @@
 		if (entry.isDirectory) {
 			await handleDraggedDirectory(item, entry);
 			return;
-		} 
+		}
 
 		switch ($amiga.getFileType(entry.name)) {
-
 			case $wasm.FILETYPE_ADF:
 			case $wasm.FILETYPE_EADF:
 			case $wasm.FILETYPE_DMS:
@@ -74,11 +73,12 @@
 		console.log('Importing files...');
 		await readDirectoryEntry(entry, '/import/' + entry.name);
 		console.log('FS contents:', $wasm.FS.readdir('/import/' + entry.name));
-		$retroShell.importFiles('/import', true, true);
+		// $retroShell.importFiles('/import', true, true);
+		$retroShell.type(`import /import/${entry.name}\n`);
 	}
 
 	async function handleDraggedFile(item: DataTransferItem, entry: FileSystemEntry) {
-		console.log('User dropped in file ${entry.name}');
+		console.log(`User dropped in file ${entry.name}`);
 		const file = item.getAsFile();
 		if (!file) return;
 
@@ -111,7 +111,8 @@
 				$retroShell.remove_all('/import');
 				$wasm.FS.mkdir('/import');
 				await readDirectoryEntry(entry, '/import/' + entry.name);
-				$retroShell.importFiles('/import', true, true);
+				// $retroShell.importFiles('/import', true, true);
+				$retroShell.type(`import /import/${entry.name}\n`);
 				break;
 		}
 	}
