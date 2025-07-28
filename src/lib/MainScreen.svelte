@@ -41,7 +41,7 @@
 
 		// Get the file system entry
 		const entry = item.webkitGetAsEntry?.();
-		console.log('entry: ', entry);
+		// console.log('entry: ', entry);
 		if (!entry) return;
 
 		if (entry.isDirectory) {
@@ -70,50 +70,18 @@
 		console.log('User dropped in directory ${entry.name}');
 		$retroShell.remove_all('/import');
 		$wasm.FS.mkdir('/import');
-		console.log('Importing files...');
 		await readDirectoryEntry(entry, '/import/' + entry.name);
-		console.log('FS contents:', $wasm.FS.readdir('/import/' + entry.name));
-		// $retroShell.importFiles('/import', true, true);
 		$retroShell.type(`import /import/${entry.name}\n`);
 	}
 
 	async function handleDraggedFile(item: DataTransferItem, entry: FileSystemEntry) {
 		console.log(`User dropped in file ${entry.name}`);
 		const file = item.getAsFile();
-		if (!file) return;
-
-		// Get the file data
-		console.log('Getting file data...');
-		// let blob = await file.arrayBuffer();
-		// let uint8View = new Uint8Array(blob);
-
-		// Write into the WASM virtual filesystem
-		console.log('WASM.FS', $wasm.FS);
-		// $wasm.FS.writeFile(file.name, uint8View);
-		console.log('Checking type...');
-
-		// Check the file type
-		switch ($amiga.getFileType(file.name)) {
-			case $wasm.FILETYPE_ADF:
-			case $wasm.FILETYPE_EADF:
-			case $wasm.FILETYPE_DMS:
-			case $wasm.FILETYPE_EXE:
-				let blob1 = await file.arrayBuffer();
-				let uint8View1 = new Uint8Array(blob1);
-				handleDraggedDisk(uint8View1);
-				break;
-			case $wasm.FILETYPE_HDF:
-				let blob2 = await file.arrayBuffer();
-				let uint8View2 = new Uint8Array(blob2);
-				handleDraggedHardDrive(uint8View2);
-				break;
-			default:
-				$retroShell.remove_all('/import');
-				$wasm.FS.mkdir('/import');
-				await readDirectoryEntry(entry, '/import/' + entry.name);
-				// $retroShell.importFiles('/import', true, true);
-				$retroShell.type(`import /import/${entry.name}\n`);
-				break;
+		if (file) {
+			$retroShell.remove_all('/import');
+			$wasm.FS.mkdir('/import');
+			await readDirectoryEntry(entry, '/import/' + entry.name);
+			$retroShell.type(`import /import/${entry.name}\n`);
 		}
 	}
 
