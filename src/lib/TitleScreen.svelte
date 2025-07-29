@@ -54,7 +54,7 @@
 						alt="Background"
 					/>
 					<div class="font-josefin mt-4 w-[50vw] text-center text-2xl text-white">
-						Welcome to the Amiga file system inspector!
+						Welcome to the Amiga file system manager!
 					</div>
 					<!--<div class="mt-0 w-[50vw] font-josefin text-sm text-center text-white">
 						v0.9 alpha (build 250724)

@@ -53,7 +53,6 @@
 			case $wasm.FILETYPE_ADF:
 			case $wasm.FILETYPE_EADF:
 			case $wasm.FILETYPE_DMS:
-			case $wasm.FILETYPE_EXE:
 				await handleDraggedDisk(item, entry);
 				break;
 
@@ -61,9 +60,15 @@
 				await handleDraggedHardDrive(item, entry);
 				break;
 
+			case $wasm.FILETYPE_SCRIPT:
+				await handleDraggedScript(item, entry);
+				break;
+
 			default:
 				await handleDraggedFile(item, entry);
 		}
+
+		$layer = Layer.shell;
 	}
 
 	async function handleDraggedDirectory(item: DataTransferItem, entry: FileSystemEntry) {
@@ -106,6 +111,19 @@
 			$retroShell.importHd(0, 0);
 			$retroShell.type('info\n');
 			$layer = Layer.shell;
+		}
+	}
+	async function handleDraggedScript(item: DataTransferItem, entry: FileSystemEntry) {
+
+		console.log("handleDraggedScript");
+		const file = item.getAsFile();
+		if (file) {
+			const buffer = await file.arrayBuffer();
+			const data = new Uint8Array(buffer);
+			$retroShell.remove_all('/import');
+			$wasm.FS.mkdir('/import');
+			$wasm.FS.writeFile(`/import/${entry.name}`, data);	
+			$retroShell.type(`source /import/${entry.name}\n`);
 		}
 	}
 

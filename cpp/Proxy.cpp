@@ -678,12 +678,16 @@ EMSCRIPTEN_BINDINGS(Keys)
 
     // FileType
     constant("FILETYPE_UNKNOWN", (int)FileType::UNKNOWN);
+    constant("FILETYPE_WORKSPACE", (int)FileType::WORKSPACE);
     constant("FILETYPE_SNAPSHOT", (int)FileType::SNAPSHOT);
     constant("FILETYPE_SCRIPT", (int)FileType::SCRIPT);
     constant("FILETYPE_ADF", (int)FileType::ADF);
-    constant("FILETYPE_HDF", (int)FileType::HDF);
+    constant("FILETYPE_ADZ", (int)FileType::ADZ);
     constant("FILETYPE_EADF", (int)FileType::EADF);
+    constant("FILETYPE_HDF", (int)FileType::HDF);
+    constant("FILETYPE_HDZ", (int)FileType::HDZ);
     constant("FILETYPE_IMG", (int)FileType::IMG);
+    constant("FILETYPE_ST", (int)FileType::ST);
     constant("FILETYPE_DMS", (int)FileType::DMS);
     constant("FILETYPE_EXE", (int)FileType::EXE);
     constant("FILETYPE_DIR", (int)FileType::DIR);

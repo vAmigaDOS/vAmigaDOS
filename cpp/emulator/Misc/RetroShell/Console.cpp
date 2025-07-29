@@ -816,6 +816,9 @@ Console::exec(const Tokens &argv, bool verbose)
     // Find the command in the command tree
     if (auto [cmd, args] = seekCommand(argv); cmd) {
 
+        // Check if a command has been found
+        if (cmd == nullptr || cmd == &root) throw util::ParseError(argv[0]);
+
         // Parse arguments
         Arguments parsedArgs = parse(*cmd, args);
 
@@ -1107,7 +1110,7 @@ Console::initCommands(RSCommand &root)
             
             .tokens = { "source" },
             .chelp  = { "Process a command script" },
-            .flags  = vAmigaDOS ? rs::disabled : 0,
+            .flags  = vAmigaDOS ? rs::hidden : 0,
             .args   = { { .name = { "path", "Script file" } } },
 
             .func   = [this] (std::ostream &os, const Arguments &args, const std::vector<isize> &values) {
