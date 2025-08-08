@@ -21,38 +21,38 @@ target_compile_options(vAmiga PRIVATE -mnontrapping-fptoint -fwasm-exceptions)
 
 # Add include path for VAmiga.h
 target_include_directories(vAmiga PRIVATE
-    emulator
-    emulator/Components
-    emulator/Components/Agnus
-    emulator/Components/Agnus/Blitter
-    emulator/Components/Agnus/Copper
-    emulator/Components/Agnus/DmaDebugger
-    emulator/Components/Agnus/Sequencer
-    emulator/Components/CIA
-    emulator/Components/CPU
-    emulator/Components/Denise
-    emulator/Components/Memory
-    emulator/Components/Paula
-    emulator/Components/Paula/Audio
-    emulator/Components/Paula/DiskController
-    emulator/Components/Paula/UART
-    emulator/Components/RTC
-    emulator/Components/Zorro
-    emulator/FileSystems
-    emulator/Infrastructure
-    emulator/Media
-    emulator/Misc
-    emulator/Peripherals
-    emulator/Peripherals/Drive
-    emulator/Peripherals/Joystick
-    emulator/Peripherals/Keyboard
-    emulator/Peripherals/Monitor
-    emulator/Peripherals/Mouse
-    emulator/Ports
-    emulator/Utilities
+    Core
+    Core/Components
+    Core/Components/Agnus
+    Core/Components/Agnus/Blitter
+    Core/Components/Agnus/Copper
+    Core/Components/Agnus/DmaDebugger
+    Core/Components/Agnus/Sequencer
+    Core/Components/CIA
+    Core/Components/CPU
+    Core/Components/Denise
+    Core/Components/Memory
+    Core/Components/Paula
+    Core/Components/Paula/Audio
+    Core/Components/Paula/DiskController
+    Core/Components/Paula/UART
+    Core/Components/RTC
+    Core/Components/Zorro
+    Core/FileSystems
+    Core/Infrastructure
+    Core/Media
+    Core/Misc
+    Core/Peripherals
+    Core/Peripherals/Drive
+    Core/Peripherals/Joystick
+    Core/Peripherals/Keyboard
+    Core/Peripherals/Monitor
+    Core/Peripherals/Mouse
+    Core/Ports
+    Core/Utilities
 )
 
-add_subdirectory("emulator")
+add_subdirectory("Core")
 target_link_libraries(vAmiga VACore)
 
 # Emscripten linker settings
